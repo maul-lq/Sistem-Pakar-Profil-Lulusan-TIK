@@ -24,16 +24,16 @@ Partial Class FStart
     Private Sub InitializeComponent()
         Panel1 = New Panel()
         ButtonLakukanTes = New Button()
-        Label2 = New Label()
-        Label1 = New Label()
+        LabelSubtitle = New Label()
+        LabelQuote = New Label()
         Panel1.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
         ' 
         Panel1.Controls.Add(ButtonLakukanTes)
-        Panel1.Controls.Add(Label2)
-        Panel1.Controls.Add(Label1)
+        Panel1.Controls.Add(LabelSubtitle)
+        Panel1.Controls.Add(LabelQuote)
         Panel1.Dock = DockStyle.Fill
         Panel1.Location = New Point(0, 0)
         Panel1.Name = "Panel1"
@@ -43,6 +43,7 @@ Partial Class FStart
         ' ButtonLakukanTes
         ' 
         ButtonLakukanTes.Anchor = AnchorStyles.None
+        ButtonLakukanTes.BackColor = Color.FromArgb(CByte(253), CByte(206), CByte(223))
         ButtonLakukanTes.Location = New Point(376, 252)
         ButtonLakukanTes.Name = "ButtonLakukanTes"
         ButtonLakukanTes.Size = New Size(107, 39)
@@ -50,35 +51,37 @@ Partial Class FStart
         ButtonLakukanTes.Text = "Lakukan &Tes"
         ButtonLakukanTes.UseVisualStyleBackColor = False
         ' 
-        ' Label2
+        ' LabelSubtitle
         ' 
-        Label2.Anchor = AnchorStyles.None
-        Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label2.Location = New Point(146, 195)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(566, 42)
-        Label2.TabIndex = 1
-        Label2.Text = "Hanya 10 menit untuk mendapatkan deskripsi yang sangat akurat tentang siapa " & vbCrLf & "kamu dan mengapa kamu melakukan sesuatu dengan cara yang kamu lakukan." & vbCrLf
+        LabelSubtitle.Anchor = AnchorStyles.None
+        LabelSubtitle.AutoSize = True
+        LabelSubtitle.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        LabelSubtitle.Location = New Point(393, 195)
+        LabelSubtitle.Name = "LabelSubtitle"
+        LabelSubtitle.Size = New Size(73, 21)
+        LabelSubtitle.TabIndex = 1
+        LabelSubtitle.Text = "[Subtitle]"
         ' 
-        ' Label1
+        ' LabelQuote
         ' 
-        Label1.Anchor = AnchorStyles.None
-        Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 27.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(356, 129)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(147, 50)
-        Label1.TabIndex = 0
-        Label1.Text = "[Quote]"
+        LabelQuote.Anchor = AnchorStyles.None
+        LabelQuote.AutoSize = True
+        LabelQuote.Font = New Font("Segoe UI", 27.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        LabelQuote.Location = New Point(356, 129)
+        LabelQuote.Name = "LabelQuote"
+        LabelQuote.Size = New Size(147, 50)
+        LabelQuote.TabIndex = 0
+        LabelQuote.Text = "[Quote]"
         ' 
         ' FStart
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
+        BackColor = Color.FromArgb(CByte(249), CByte(245), CByte(246))
         ClientSize = New Size(859, 427)
         Controls.Add(Panel1)
         Name = "FStart"
+        StartPosition = FormStartPosition.CenterScreen
         Text = "Si Sok Tau"
         Panel1.ResumeLayout(False)
         Panel1.PerformLayout()
@@ -87,6 +90,6 @@ Partial Class FStart
 
     Friend WithEvents Panel1 As Panel
     Friend WithEvents ButtonLakukanTes As Button
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Label1 As Label
+    Friend WithEvents LabelSubtitle As Label
+    Friend WithEvents LabelQuote As Label
 End Class

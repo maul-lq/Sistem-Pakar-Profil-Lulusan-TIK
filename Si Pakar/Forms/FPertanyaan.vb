@@ -2,7 +2,7 @@
     Public startpage As FStart
 
     Private Sub FPertanyaan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        For d As Integer = 1 To 10
+        For d As Integer = 1 To 25
             Dim btn As New Button()
             btn.Text = d
             btn.Size = New Size(35, 35)
@@ -33,5 +33,10 @@
     Private Sub ButtonSubmit_Click(sender As Object, e As EventArgs) Handles ButtonSubmit.Click
         Dim fhasil As New FHasil
         fhasil.Show()
+        Hide()
+    End Sub
+
+    Private Sub FPertanyaan_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        Application.Exit()
     End Sub
 End Class

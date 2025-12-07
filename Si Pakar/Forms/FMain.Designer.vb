@@ -77,7 +77,7 @@ Partial Class FMain
         TextBoxEmail.Margin = New Padding(3, 4, 3, 4)
         TextBoxEmail.Name = "TextBoxEmail"
         TextBoxEmail.Size = New Size(177, 27)
-        TextBoxEmail.TabIndex = 10
+        TextBoxEmail.TabIndex = 2
         ' 
         ' Label4
         ' 
@@ -94,7 +94,7 @@ Partial Class FMain
         ButtonLanjut.Location = New Point(241, 237)
         ButtonLanjut.Name = "ButtonLanjut"
         ButtonLanjut.Size = New Size(89, 28)
-        ButtonLanjut.TabIndex = 8
+        ButtonLanjut.TabIndex = 5
         ButtonLanjut.Text = "Lanjut"
         ButtonLanjut.UseVisualStyleBackColor = True
         ' 
@@ -116,7 +116,7 @@ Partial Class FMain
         ComboBoxProfesi.Location = New Point(153, 180)
         ComboBoxProfesi.Name = "ComboBoxProfesi"
         ComboBoxProfesi.Size = New Size(177, 28)
-        ComboBoxProfesi.TabIndex = 6
+        ComboBoxProfesi.TabIndex = 4
         ' 
         ' Label2
         ' 
@@ -135,7 +135,7 @@ Partial Class FMain
         ComboBoxProgramStudi.Location = New Point(153, 134)
         ComboBoxProgramStudi.Name = "ComboBoxProgramStudi"
         ComboBoxProgramStudi.Size = New Size(177, 28)
-        ComboBoxProgramStudi.TabIndex = 4
+        ComboBoxProgramStudi.TabIndex = 3
         ' 
         ' FMain
         ' 

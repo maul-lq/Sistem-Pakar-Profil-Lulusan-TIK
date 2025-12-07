@@ -109,7 +109,7 @@ Partial Class FPertanyaan
         ' 
         RadioButton5.Anchor = AnchorStyles.None
         RadioButton5.AutoSize = True
-        RadioButton5.Location = New Point(631, 254)
+        RadioButton5.Location = New Point(637, 254)
         RadioButton5.Name = "RadioButton5"
         RadioButton5.Size = New Size(128, 24)
         RadioButton5.TabIndex = 5
@@ -121,7 +121,7 @@ Partial Class FPertanyaan
         ' 
         RadioButton4.Anchor = AnchorStyles.None
         RadioButton4.AutoSize = True
-        RadioButton4.Location = New Point(536, 254)
+        RadioButton4.Location = New Point(542, 254)
         RadioButton4.Name = "RadioButton4"
         RadioButton4.Size = New Size(78, 24)
         RadioButton4.TabIndex = 4
@@ -133,7 +133,7 @@ Partial Class FPertanyaan
         ' 
         RadioButton3.Anchor = AnchorStyles.None
         RadioButton3.AutoSize = True
-        RadioButton3.Location = New Point(396, 254)
+        RadioButton3.Location = New Point(402, 254)
         RadioButton3.Name = "RadioButton3"
         RadioButton3.Size = New Size(123, 24)
         RadioButton3.TabIndex = 3
@@ -145,7 +145,7 @@ Partial Class FPertanyaan
         ' 
         RadioButton2.Anchor = AnchorStyles.None
         RadioButton2.AutoSize = True
-        RadioButton2.Location = New Point(261, 254)
+        RadioButton2.Location = New Point(267, 254)
         RadioButton2.Name = "RadioButton2"
         RadioButton2.Size = New Size(118, 24)
         RadioButton2.TabIndex = 2
@@ -157,7 +157,7 @@ Partial Class FPertanyaan
         ' 
         RadioButton1.Anchor = AnchorStyles.None
         RadioButton1.AutoSize = True
-        RadioButton1.Location = New Point(76, 254)
+        RadioButton1.Location = New Point(82, 254)
         RadioButton1.Name = "RadioButton1"
         RadioButton1.Size = New Size(168, 24)
         RadioButton1.TabIndex = 1
@@ -169,7 +169,7 @@ Partial Class FPertanyaan
         ' 
         LabelSoal.Anchor = AnchorStyles.None
         LabelSoal.AutoSize = True
-        LabelSoal.Location = New Point(369, 140)
+        LabelSoal.Location = New Point(359, 140)
         LabelSoal.Name = "LabelSoal"
         LabelSoal.Size = New Size(114, 20)
         LabelSoal.TabIndex = 0

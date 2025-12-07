@@ -81,7 +81,7 @@ Module Hasil_Analisis
 
         Using conn = GetConnection()
             conn.Open()
-            
+
             ' Hitung skor per profesi dari Exam Details (untuk pertanyaan fase 2 yang punya kode profesi)
             Dim q As String = "
                 SELECT 
@@ -112,7 +112,7 @@ Module Hasil_Analisis
                     ISNULL(ers.[score value], 0) as skor_rumpun
                 FROM Profesi p
                 LEFT JOIN [Exam Rumpun Scores] ers ON p.[kode rumpun] = ers.[kode rumpun] AND ers.[id sesi] = @sid"
-            
+
             Dim cmdRumpun As New SqlCommand(qRumpun, conn)
             cmdRumpun.Parameters.AddWithValue("@sid", sessionId)
             Dim readerRumpun = cmdRumpun.ExecuteReader()
@@ -120,7 +120,7 @@ Module Hasil_Analisis
             While readerRumpun.Read()
                 Dim kodeProfesi As String = readerRumpun("kode profesi").ToString()
                 Dim skorRumpun As Double = Convert.ToDouble(readerRumpun("skor_rumpun"))
-                
+
                 ' Tambahkan skor rumpun ke skor profesi (weighted)
                 If hasil.ContainsKey(kodeProfesi) Then
                     hasil(kodeProfesi) += skorRumpun * 0.3 ' Bobot 30% dari skor rumpun fase 1
@@ -150,7 +150,7 @@ Module Hasil_Analisis
     ' ==========================================
     Public Sub SimpanSkorRumpun(sessionId As Integer, skorRumpun As Dictionary(Of String, Double))
         Dim adapter As New Exam_Rumpun_ScoresTableAdapter()
-        
+
         For Each kvp In skorRumpun
             Try
                 adapter.Insert(sessionId, kvp.Key, kvp.Value)

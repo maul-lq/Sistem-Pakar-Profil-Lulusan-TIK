@@ -23,20 +23,20 @@ Partial Class FHasil
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FHasil))
-        Label1 = New Label()
-        Label2 = New Label()
-        Label3 = New Label()
+        LabelKarir1st = New Label()
+        LabelKarir2nd = New Label()
+        LabelKarir3Rd = New Label()
         Label4 = New Label()
         Label5 = New Label()
         Label6 = New Label()
         Label7 = New Label()
         Label8 = New Label()
-        Label9 = New Label()
-        Label10 = New Label()
-        Label11 = New Label()
-        Label12 = New Label()
-        Button1 = New Button()
-        Button2 = New Button()
+        LabelGoldeMatch = New Label()
+        LabelHiddenGem = New Label()
+        LabelRealityCheck = New Label()
+        LabelExplorer = New Label()
+        ButtonKembaliKeAwal = New Button()
+        ButtonPrint = New Button()
         PictureBox1 = New PictureBox()
         PictureBox2 = New PictureBox()
         PictureBox3 = New PictureBox()
@@ -55,33 +55,33 @@ Partial Class FHasil
         Panel1.SuspendLayout()
         SuspendLayout()
         ' 
-        ' Label1
+        ' LabelKarir1st
         ' 
-        Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(353, 143)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(94, 17)
-        Label1.TabIndex = 0
-        Label1.Text = "[1 Nama Karir]"
+        LabelKarir1st.AutoSize = True
+        LabelKarir1st.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        LabelKarir1st.Location = New Point(353, 143)
+        LabelKarir1st.Name = "LabelKarir1st"
+        LabelKarir1st.Size = New Size(94, 17)
+        LabelKarir1st.TabIndex = 0
+        LabelKarir1st.Text = "[1 Nama Karir]"
         ' 
-        ' Label2
+        ' LabelKarir2nd
         ' 
-        Label2.AutoSize = True
-        Label2.Location = New Point(142, 178)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(83, 15)
-        Label2.TabIndex = 1
-        Label2.Text = "[2 Nama Karir]"
+        LabelKarir2nd.AutoSize = True
+        LabelKarir2nd.Location = New Point(142, 178)
+        LabelKarir2nd.Name = "LabelKarir2nd"
+        LabelKarir2nd.Size = New Size(83, 15)
+        LabelKarir2nd.TabIndex = 1
+        LabelKarir2nd.Text = "[2 Nama Karir]"
         ' 
-        ' Label3
+        ' LabelKarir3Rd
         ' 
-        Label3.AutoSize = True
-        Label3.Location = New Point(586, 178)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(83, 15)
-        Label3.TabIndex = 2
-        Label3.Text = "[3 Nama Karir]"
+        LabelKarir3Rd.AutoSize = True
+        LabelKarir3Rd.Location = New Point(586, 178)
+        LabelKarir3Rd.Name = "LabelKarir3Rd"
+        LabelKarir3Rd.Size = New Size(83, 15)
+        LabelKarir3Rd.TabIndex = 2
+        LabelKarir3Rd.Text = "[3 Nama Karir]"
         ' 
         ' Label4
         ' 
@@ -129,59 +129,59 @@ Partial Class FHasil
         Label8.TabIndex = 7
         Label8.Text = "Explorer"
         ' 
-        ' Label9
+        ' LabelGoldeMatch
         ' 
-        Label9.AutoSize = True
-        Label9.Location = New Point(67, 345)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(74, 15)
-        Label9.TabIndex = 8
-        Label9.Text = "[Nama Karir]"
+        LabelGoldeMatch.AutoSize = True
+        LabelGoldeMatch.Location = New Point(67, 345)
+        LabelGoldeMatch.Name = "LabelGoldeMatch"
+        LabelGoldeMatch.Size = New Size(74, 15)
+        LabelGoldeMatch.TabIndex = 8
+        LabelGoldeMatch.Text = "[Nama Karir]"
         ' 
-        ' Label10
+        ' LabelHiddenGem
         ' 
-        Label10.AutoSize = True
-        Label10.Location = New Point(272, 345)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(74, 15)
-        Label10.TabIndex = 9
-        Label10.Text = "[Nama Karir]"
+        LabelHiddenGem.AutoSize = True
+        LabelHiddenGem.Location = New Point(272, 345)
+        LabelHiddenGem.Name = "LabelHiddenGem"
+        LabelHiddenGem.Size = New Size(74, 15)
+        LabelHiddenGem.TabIndex = 9
+        LabelHiddenGem.Text = "[Nama Karir]"
         ' 
-        ' Label11
+        ' LabelRealityCheck
         ' 
-        Label11.AutoSize = True
-        Label11.Location = New Point(472, 345)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(74, 15)
-        Label11.TabIndex = 10
-        Label11.Text = "[Nama Karir]"
+        LabelRealityCheck.AutoSize = True
+        LabelRealityCheck.Location = New Point(472, 345)
+        LabelRealityCheck.Name = "LabelRealityCheck"
+        LabelRealityCheck.Size = New Size(74, 15)
+        LabelRealityCheck.TabIndex = 10
+        LabelRealityCheck.Text = "[Nama Karir]"
         ' 
-        ' Label12
+        ' LabelExplorer
         ' 
-        Label12.AutoSize = True
-        Label12.Location = New Point(659, 345)
-        Label12.Name = "Label12"
-        Label12.Size = New Size(74, 15)
-        Label12.TabIndex = 11
-        Label12.Text = "[Nama Karir]"
+        LabelExplorer.AutoSize = True
+        LabelExplorer.Location = New Point(659, 345)
+        LabelExplorer.Name = "LabelExplorer"
+        LabelExplorer.Size = New Size(74, 15)
+        LabelExplorer.TabIndex = 11
+        LabelExplorer.Text = "[Nama Karir]"
         ' 
-        ' Button1
+        ' ButtonKembaliKeAwal
         ' 
-        Button1.Location = New Point(348, 405)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(97, 33)
-        Button1.TabIndex = 12
-        Button1.Text = "&Kembali"
-        Button1.UseVisualStyleBackColor = True
+        ButtonKembaliKeAwal.Location = New Point(348, 405)
+        ButtonKembaliKeAwal.Name = "ButtonKembaliKeAwal"
+        ButtonKembaliKeAwal.Size = New Size(97, 33)
+        ButtonKembaliKeAwal.TabIndex = 12
+        ButtonKembaliKeAwal.Text = "&Kembali"
+        ButtonKembaliKeAwal.UseVisualStyleBackColor = True
         ' 
-        ' Button2
+        ' ButtonPrint
         ' 
-        Button2.Location = New Point(691, 405)
-        Button2.Name = "Button2"
-        Button2.Size = New Size(97, 33)
-        Button2.TabIndex = 13
-        Button2.Text = "Print Hasil"
-        Button2.UseVisualStyleBackColor = True
+        ButtonPrint.Location = New Point(691, 405)
+        ButtonPrint.Name = "ButtonPrint"
+        ButtonPrint.Size = New Size(97, 33)
+        ButtonPrint.TabIndex = 13
+        ButtonPrint.Text = "Print Hasil"
+        ButtonPrint.UseVisualStyleBackColor = True
         ' 
         ' PictureBox1
         ' 
@@ -255,9 +255,9 @@ Partial Class FHasil
         ' 
         ' Panel1
         ' 
-        Panel1.Controls.Add(Button2)
+        Panel1.Controls.Add(ButtonPrint)
         Panel1.Controls.Add(PictureBox5)
-        Panel1.Controls.Add(Button1)
+        Panel1.Controls.Add(ButtonKembaliKeAwal)
         Panel1.Dock = DockStyle.Fill
         Panel1.Location = New Point(0, 0)
         Panel1.Name = "Panel1"
@@ -275,18 +275,18 @@ Partial Class FHasil
         Controls.Add(PictureBox3)
         Controls.Add(PictureBox2)
         Controls.Add(PictureBox1)
-        Controls.Add(Label12)
-        Controls.Add(Label11)
-        Controls.Add(Label10)
-        Controls.Add(Label9)
+        Controls.Add(LabelExplorer)
+        Controls.Add(LabelRealityCheck)
+        Controls.Add(LabelHiddenGem)
+        Controls.Add(LabelGoldeMatch)
         Controls.Add(Label8)
         Controls.Add(Label7)
         Controls.Add(Label6)
         Controls.Add(Label5)
         Controls.Add(Label4)
-        Controls.Add(Label3)
-        Controls.Add(Label2)
-        Controls.Add(Label1)
+        Controls.Add(LabelKarir3Rd)
+        Controls.Add(LabelKarir2nd)
+        Controls.Add(LabelKarir1st)
         Controls.Add(Panel1)
         Name = "FHasil"
         StartPosition = FormStartPosition.CenterScreen
@@ -303,20 +303,20 @@ Partial Class FHasil
         PerformLayout()
     End Sub
 
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Label3 As Label
+    Friend WithEvents LabelKarir1st As Label
+    Friend WithEvents LabelKarir2nd As Label
+    Friend WithEvents LabelKarir3Rd As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents Label7 As Label
     Friend WithEvents Label8 As Label
-    Friend WithEvents Label9 As Label
-    Friend WithEvents Label10 As Label
-    Friend WithEvents Label11 As Label
-    Friend WithEvents Label12 As Label
-    Friend WithEvents Button1 As Button
-    Friend WithEvents Button2 As Button
+    Friend WithEvents LabelGoldeMatch As Label
+    Friend WithEvents LabelHiddenGem As Label
+    Friend WithEvents LabelRealityCheck As Label
+    Friend WithEvents LabelExplorer As Label
+    Friend WithEvents ButtonKembaliKeAwal As Button
+    Friend WithEvents ButtonPrint As Button
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents PictureBox3 As PictureBox

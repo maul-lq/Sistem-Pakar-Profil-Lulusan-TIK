@@ -27,7 +27,7 @@ Partial Class FPertanyaan
         FlowLayoutPanelNomorSoal = New FlowLayoutPanel()
         PanelWadah = New Panel()
         PanelPertanyaann = New Panel()
-        RadioButtonSangatSetuju = New RadioButton()
+        RadioButton5 = New RadioButton()
         RadioButton4 = New RadioButton()
         RadioButton3 = New RadioButton()
         RadioButton2 = New RadioButton()
@@ -93,7 +93,7 @@ Partial Class FPertanyaan
         ' 
         ' PanelPertanyaann
         ' 
-        PanelPertanyaann.Controls.Add(RadioButtonSangatSetuju)
+        PanelPertanyaann.Controls.Add(RadioButton5)
         PanelPertanyaann.Controls.Add(RadioButton4)
         PanelPertanyaann.Controls.Add(RadioButton3)
         PanelPertanyaann.Controls.Add(RadioButton2)
@@ -105,17 +105,17 @@ Partial Class FPertanyaan
         PanelPertanyaann.Size = New Size(852, 359)
         PanelPertanyaann.TabIndex = 3
         ' 
-        ' RadioButtonSangatSetuju
+        ' RadioButton5
         ' 
-        RadioButtonSangatSetuju.Anchor = AnchorStyles.None
-        RadioButtonSangatSetuju.AutoSize = True
-        RadioButtonSangatSetuju.Location = New Point(631, 254)
-        RadioButtonSangatSetuju.Name = "RadioButtonSangatSetuju"
-        RadioButtonSangatSetuju.Size = New Size(128, 24)
-        RadioButtonSangatSetuju.TabIndex = 5
-        RadioButtonSangatSetuju.TabStop = True
-        RadioButtonSangatSetuju.Text = "Sangat Mampu"
-        RadioButtonSangatSetuju.UseVisualStyleBackColor = True
+        RadioButton5.Anchor = AnchorStyles.None
+        RadioButton5.AutoSize = True
+        RadioButton5.Location = New Point(631, 254)
+        RadioButton5.Name = "RadioButton5"
+        RadioButton5.Size = New Size(128, 24)
+        RadioButton5.TabIndex = 5
+        RadioButton5.TabStop = True
+        RadioButton5.Text = "Sangat Mampu"
+        RadioButton5.UseVisualStyleBackColor = True
         ' 
         ' RadioButton4
         ' 
@@ -246,7 +246,7 @@ Partial Class FPertanyaan
     Friend WithEvents PanelPertanyaann As Panel
     Friend WithEvents RadioButton1 As RadioButton
     Friend WithEvents LabelSoal As Label
-    Friend WithEvents RadioButtonSangatSetuju As RadioButton
+    Friend WithEvents RadioButton5 As RadioButton
     Friend WithEvents RadioButton4 As RadioButton
     Friend WithEvents RadioButton3 As RadioButton
     Friend WithEvents RadioButton2 As RadioButton

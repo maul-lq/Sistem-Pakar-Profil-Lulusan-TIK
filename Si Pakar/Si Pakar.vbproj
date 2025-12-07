@@ -22,11 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Database\DataSetProgram.Designer.vb">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DataSetProgram.xsd</DependentUpon>
-    </Compile>
     <Compile Update="My Project\Application.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -58,10 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Database\DataSetProgram.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSetProgram.Designer.vb</LastGenOutput>
-    </None>
     <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

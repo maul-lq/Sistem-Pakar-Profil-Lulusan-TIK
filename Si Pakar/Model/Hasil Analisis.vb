@@ -1,6 +1,5 @@
 Imports Microsoft.Data.SqlClient
 Imports System.Text.Json
-Imports Si_Pakar.DataSetProgramTableAdapters
 
 ' Model untuk menyimpan hasil perhitungan
 Public Class HasilProfesi
@@ -149,22 +148,38 @@ Module Hasil_Analisis
     ' SIMPAN SKOR RUMPUN KE EXAM RUMPUN SCORES
     ' ==========================================
     Public Sub SimpanSkorRumpun(sessionId As Integer, skorRumpun As Dictionary(Of String, Double))
-        Dim adapter As New Exam_Rumpun_ScoresTableAdapter()
-
         For Each kvp In skorRumpun
             Try
-                adapter.Insert(sessionId, kvp.Key, kvp.Value)
-            Catch ex As Exception
-                ' Jika sudah ada, update
                 Using conn = GetConnection()
                     conn.Open()
-                    Dim q As String = "UPDATE [Exam Rumpun Scores] SET [score value] = @sv WHERE [id sesi] = @sid AND [kode rumpun] = @kr"
-                    Dim cmd As New SqlCommand(q, conn)
-                    cmd.Parameters.AddWithValue("@sv", kvp.Value)
-                    cmd.Parameters.AddWithValue("@sid", sessionId)
-                    cmd.Parameters.AddWithValue("@kr", kvp.Key)
-                    cmd.ExecuteNonQuery()
+
+                    ' Cek apakah data sudah ada
+                    Dim qCheck As String = "SELECT COUNT(*) FROM [Exam Rumpun Scores] WHERE [id sesi] = @sid AND [kode rumpun] = @kr"
+                    Dim cmdCheck As New SqlCommand(qCheck, conn)
+                    cmdCheck.Parameters.AddWithValue("@sid", sessionId)
+                    cmdCheck.Parameters.AddWithValue("@kr", kvp.Key)
+                    Dim count As Integer = Convert.ToInt32(cmdCheck.ExecuteScalar())
+
+                    If count > 0 Then
+                        ' Update jika sudah ada
+                        Dim qUpdate As String = "UPDATE [Exam Rumpun Scores] SET [score value] = @sv WHERE [id sesi] = @sid AND [kode rumpun] = @kr"
+                        Dim cmdUpdate As New SqlCommand(qUpdate, conn)
+                        cmdUpdate.Parameters.AddWithValue("@sv", kvp.Value)
+                        cmdUpdate.Parameters.AddWithValue("@sid", sessionId)
+                        cmdUpdate.Parameters.AddWithValue("@kr", kvp.Key)
+                        cmdUpdate.ExecuteNonQuery()
+                    Else
+                        ' Insert jika belum ada
+                        Dim qInsert As String = "INSERT INTO [Exam Rumpun Scores] ([id sesi], [kode rumpun], [score value]) VALUES (@sid, @kr, @sv)"
+                        Dim cmdInsert As New SqlCommand(qInsert, conn)
+                        cmdInsert.Parameters.AddWithValue("@sid", sessionId)
+                        cmdInsert.Parameters.AddWithValue("@kr", kvp.Key)
+                        cmdInsert.Parameters.AddWithValue("@sv", kvp.Value)
+                        cmdInsert.ExecuteNonQuery()
+                    End If
                 End Using
+            Catch ex As Exception
+                MessageBox.Show("Error menyimpan skor rumpun: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         Next
     End Sub

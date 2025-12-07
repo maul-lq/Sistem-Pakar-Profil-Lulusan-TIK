@@ -1,12 +1,12 @@
 ﻿Imports Microsoft.Data.SqlClient
-Imports Si_Pakar.DataSetProgram
 Imports System.Linq
 
 Public Class FPertanyaan
     Public phase As Short
     Public sessionId As Integer
 
-    Dim dataSoal As New DataPertanyaanDataTable()
+    ' ✅ GANTI DataPertanyaanDataTable dengan List(Of PertanyaanModel)
+    Dim dataSoal As New List(Of PertanyaanModel)()
     Dim currNum As Integer = 0
     Dim scenarioName As String = ""
 
@@ -16,7 +16,6 @@ Public Class FPertanyaan
             MuatSoalFase1()
         End If
 
-        ' ✅ DISABLE BUTTON SUBMIT DI AWAL
         ButtonSubmit.Enabled = False
     End Sub
 
@@ -29,13 +28,13 @@ Public Class FPertanyaan
             Dim reader As SqlDataReader = cmd.ExecuteReader()
 
             While reader.Read()
-                Dim newRow As DataPertanyaanRow = dataSoal.NewDataPertanyaanRow()
-                newRow.IdPertanyaan = reader("Id Pertanyaan").ToString()
-                newRow.TeksPertanyaan = reader("teks pertanyaan").ToString()
-                newRow.KodeRumpun = reader("kode rumpun").ToString()
-                newRow.ExpertWeight = Convert.ToDouble(reader("expert weight"))
-                newRow.JawabanUser = -1.0 ' ✅ UBAH DEFAULT JADI -1 (BELUM DIJAWAB)
-                dataSoal.AddDataPertanyaanRow(newRow)
+                Dim newModel As New PertanyaanModel()
+                newModel.IdPertanyaan = reader("Id Pertanyaan").ToString()
+                newModel.TeksPertanyaan = reader("teks pertanyaan").ToString()
+                newModel.KodeRumpun = reader("kode rumpun").ToString()
+                newModel.ExpertWeight = Convert.ToDouble(reader("expert weight"))
+                newModel.JawabanUser = -1.0
+                dataSoal.Add(newModel)
             End While
         End Using
 
@@ -43,7 +42,6 @@ Public Class FPertanyaan
     End Sub
 
     Private Sub ProsesLogikaFase2()
-        ' ✅ FIX BUG: RESET currNum DAN RADIO BUTTONS SEBELUM CLEAR DATA
         currNum = 0
         ResetRadioButtons()
 
@@ -72,25 +70,25 @@ Public Class FPertanyaan
         Dim gap As Double = juara1.Value - juara2Val
         Dim rumpunTarget1 As String = juara1.Key
 
-        Dim dtKandidat As New DataTable()
+        Dim kandidatList As New List(Of PertanyaanModel)()
 
         If gap > 0.2 Then
             scenarioName = "Dominant"
             PerbaruiSeknarioUjian(sessionId, scenarioName)
-            dtKandidat = AmbilKandidatSoal(rumpunTarget1)
-            FilterSoalDistribusi(dtKandidat, 4)
+            kandidatList = AmbilKandidatSoal(rumpunTarget1)
+            kandidatList = FilterSoalDistribusi(kandidatList, 4)
 
         ElseIf gap <= 0.2 And juara1.Value > 0.4 Then
             scenarioName = "Hybrid"
             PerbaruiSeknarioUjian(sessionId, scenarioName)
-            Dim dt1 = AmbilKandidatSoal(rumpunTarget1)
-            FilterSoalDistribusi(dt1, 2)
+            Dim list1 = AmbilKandidatSoal(rumpunTarget1)
+            list1 = FilterSoalDistribusi(list1, 2)
 
-            Dim dt2 = AmbilKandidatSoal(rumpunTarget2)
-            FilterSoalDistribusi(dt2, 2)
+            Dim list2 = AmbilKandidatSoal(rumpunTarget2)
+            list2 = FilterSoalDistribusi(list2, 2)
 
-            dtKandidat.Merge(dt1)
-            dtKandidat.Merge(dt2)
+            kandidatList.AddRange(list1)
+            kandidatList.AddRange(list2)
 
         Else
             Dim minatUser As List(Of String) = GetMinatUser(sessionId)
@@ -99,37 +97,24 @@ Public Class FPertanyaan
             If rumpunMinat <> "" Then
                 scenarioName = "Beginner"
                 PerbaruiSeknarioUjian(sessionId, scenarioName)
-                dtKandidat = AmbilKandidatSoal(rumpunMinat)
-                FilterSoalDistribusi(dtKandidat, 2)
+                kandidatList = AmbilKandidatSoal(rumpunMinat)
+                kandidatList = FilterSoalDistribusi(kandidatList, 2)
             Else
                 scenarioName = "Null"
                 PerbaruiSeknarioUjian(sessionId, scenarioName)
-                dtKandidat = AmbilKandidatSoal("CP")
-                FilterSoalDistribusi(dtKandidat, 4)
+                kandidatList = AmbilKandidatSoal("CP")
+                kandidatList = FilterSoalDistribusi(kandidatList, 4)
             End If
         End If
 
         dataSoal.Clear()
-        For Each rowKandidat As DataRow In dtKandidat.Rows
-            Dim newRow As DataPertanyaanRow = dataSoal.NewDataPertanyaanRow()
-            newRow.IdPertanyaan = rowKandidat("Id Pertanyaan").ToString()
-            newRow.TeksPertanyaan = rowKandidat("teks pertanyaan").ToString()
-            newRow.KodeRumpun = rowKandidat("kode rumpun").ToString()
-            newRow.ExpertWeight = Convert.ToDouble(rowKandidat("expert weight"))
-            newRow.JawabanUser = -1.0
-            dataSoal.AddDataPertanyaanRow(newRow)
-        Next
+        dataSoal.AddRange(kandidatList)
 
         UpdateTampilanAwal()
     End Sub
 
-    Private Function AmbilKandidatSoal(kodeRumpun As String) As DataTable
-        Dim dt As New DataTable()
-        dt.Columns.Add("Id Pertanyaan", GetType(String))
-        dt.Columns.Add("teks pertanyaan", GetType(String))
-        dt.Columns.Add("kode rumpun", GetType(String))
-        dt.Columns.Add("expert weight", GetType(Double))
-        dt.Columns.Add("kode profesi", GetType(String))
+    Private Function AmbilKandidatSoal(kodeRumpun As String) As List(Of PertanyaanModel)
+        Dim list As New List(Of PertanyaanModel)()
 
         Using conn = GetConnection()
             conn.Open()
@@ -137,32 +122,59 @@ Public Class FPertanyaan
             Dim cmd As New SqlCommand(q, conn)
             cmd.Parameters.AddWithValue("@kr", kodeRumpun)
             Dim r = cmd.ExecuteReader()
+
             While r.Read()
-                dt.Rows.Add(r("Id Pertanyaan"), r("teks pertanyaan"), r("kode rumpun"), r("expert weight"), r("kode profesi"))
+                Dim model As New PertanyaanModel()
+                model.IdPertanyaan = r("Id Pertanyaan").ToString()
+                model.TeksPertanyaan = r("teks pertanyaan").ToString()
+                model.KodeRumpun = r("kode rumpun").ToString()
+                model.ExpertWeight = Convert.ToDouble(r("expert weight"))
+                model.JawabanUser = -1.0
+
+                ' Simpan kode profesi untuk keperluan filtering
+                If Not IsDBNull(r("kode profesi")) Then
+                    model.IdPertanyaan &= "|" & r("kode profesi").ToString() ' Temporary storage
+                End If
+
+                list.Add(model)
             End While
         End Using
-        Return dt
+
+        Return list
     End Function
 
-    Private Sub FilterSoalDistribusi(ByRef dtTarget As DataTable, maxPerSub As Integer)
-        Dim rowsList = dtTarget.AsEnumerable().ToList()
-        Dim groups = rowsList.GroupBy(Function(row) row.Field(Of String)("kode profesi"))
+    Private Function FilterSoalDistribusi(listSoal As List(Of PertanyaanModel), maxPerSub As Integer) As List(Of PertanyaanModel)
+        Dim hasil As New List(Of PertanyaanModel)()
 
-        Dim dtHasil As DataTable = dtTarget.Clone()
+        ' Group by kode profesi (extract dari IdPertanyaan yang temporary storage)
+        Dim grouped As New Dictionary(Of String, List(Of PertanyaanModel))()
 
-        For Each grp In groups
-            Dim taken = grp.Take(maxPerSub)
-            For Each row In taken
-                dtHasil.ImportRow(row)
-            Next
+        For Each soal In listSoal
+            ' Extract kode profesi dari temporary storage
+            Dim parts = soal.IdPertanyaan.Split("|"c)
+            Dim idAsli = parts(0)
+            Dim kodeProfesi = If(parts.Length > 1, parts(1), "UNKNOWN")
+
+            ' Restore IdPertanyaan ke nilai asli
+            soal.IdPertanyaan = idAsli
+
+            If Not grouped.ContainsKey(kodeProfesi) Then
+                grouped(kodeProfesi) = New List(Of PertanyaanModel)()
+            End If
+            grouped(kodeProfesi).Add(soal)
         Next
-        dtTarget = dtHasil
-    End Sub
+
+        ' Ambil maxPerSub dari setiap profesi
+        For Each kvp In grouped
+            hasil.AddRange(kvp.Value.Take(maxPerSub))
+        Next
+
+        Return hasil
+    End Function
 
     Private Function HitungSkorMentah() As Dictionary(Of String, Double)
         Dim hasil As New Dictionary(Of String, Double)
-        For Each row As DataPertanyaanRow In dataSoal.Rows
-            ' ✅ SKIP JIKA BELUM DIJAWAB
+        For Each row In dataSoal
             If row.JawabanUser < 0 Then Continue For
 
             Dim kr As String = row.KodeRumpun
@@ -177,7 +189,7 @@ Public Class FPertanyaan
 
     Private Function HitungMaxBobotPerRumpun() As Dictionary(Of String, Double)
         Dim hasil As New Dictionary(Of String, Double)
-        For Each row As DataPertanyaanRow In dataSoal.Rows
+        For Each row In dataSoal
             Dim kr As String = row.KodeRumpun
             Dim w As Double = row.ExpertWeight
 
@@ -205,19 +217,16 @@ Public Class FPertanyaan
         Return ""
     End Function
 
-    ' ==========================================
-    ' ✅ VALIDASI & UPDATE STATUS
-    ' ==========================================
     Private Function CekSemuaSoalSudahDijawab() As Boolean
-        For Each row As DataPertanyaanRow In dataSoal.Rows
-            If row.JawabanUser < 0 Then Return False ' Belum dijawab
+        For Each row In dataSoal
+            If row.JawabanUser < 0 Then Return False
         Next
         Return True
     End Function
 
     Private Function HitungJumlahSoalTerjawab() As Integer
         Dim count As Integer = 0
-        For Each row As DataPertanyaanRow In dataSoal.Rows
+        For Each row In dataSoal
             If row.JawabanUser >= 0 Then count += 1
         Next
         Return count
@@ -225,17 +234,13 @@ Public Class FPertanyaan
 
     Private Sub UpdateStatusSubmitButton()
         ButtonSubmit.Enabled = CekSemuaSoalSudahDijawab()
-
-        ' ✅ UPDATE PROGRESS LABEL (opsional - tambahkan Label di Designer jika diperlukan)
-        ' LabelProgress.Text = $"{HitungJumlahSoalTerjawab()} / {dataSoal.Rows.Count} Soal Dijawab"
     End Sub
 
     Private Sub UpdateWarnaButtonNomor()
         For i As Integer = 0 To FlowLayoutPanelNomorSoal.Controls.Count - 1
             Dim btn As Button = CType(FlowLayoutPanelNomorSoal.Controls(i), Button)
-            Dim row As DataPertanyaanRow = CType(dataSoal.Rows(i), DataPertanyaanRow)
+            Dim row = dataSoal(i)
 
-            ' ✅ HIJAU JIKA SUDAH DIJAWAB, PUTIH JIKA BELUM
             If row.JawabanUser >= 0 Then
                 btn.BackColor = Color.LightGreen
             Else
@@ -245,7 +250,7 @@ Public Class FPertanyaan
     End Sub
 
     Private Sub UpdateTampilanAwal()
-        BuatTombol(dataSoal.Rows.Count)
+        BuatTombol(dataSoal.Count)
         UbahSoal(1)
 
         If phase = 2 Then
@@ -254,7 +259,6 @@ Public Class FPertanyaan
             ButtonSubmit.Text = "LIHAT HASIL AKHIR"
         End If
 
-        ' ✅ UPDATE STATUS AWAL
         UpdateStatusSubmitButton()
         UpdateWarnaButtonNomor()
     End Sub
@@ -271,16 +275,15 @@ Public Class FPertanyaan
     End Sub
 
     Private Sub UbahSoal(nomorUrut As Integer)
-        ' ✅ FIX BUG: CEK currNum VALID SEBELUM SIMPAN JAWABAN
-        If currNum >= 0 And currNum < dataSoal.Rows.Count Then
+        If currNum >= 0 And currNum < dataSoal.Count Then
             SimpanJawabanSementara()
         End If
 
         currNum = nomorUrut - 1
 
-        If currNum < 0 Or currNum >= dataSoal.Rows.Count Then Return
+        If currNum < 0 Or currNum >= dataSoal.Count Then Return
 
-        Dim row As DataPertanyaanRow = CType(dataSoal.Rows(currNum), DataPertanyaanRow)
+        Dim row = dataSoal(currNum)
 
         LabelSoal.Text = row.TeksPertanyaan
         AturPosisiLabel()
@@ -288,7 +291,6 @@ Public Class FPertanyaan
         ResetRadioButtons()
         Dim nilaiTersimpan As Double = row.JawabanUser
 
-        ' ✅ JIKA BELUM DIJAWAB, SEMUA RADIO TETAP FALSE
         If nilaiTersimpan >= 0 Then
             SetRadioButtonValue(nilaiTersimpan)
         End If
@@ -327,12 +329,10 @@ Public Class FPertanyaan
         If RadioButton4.Checked Then nilai = 0.8
         If RadioButton5.Checked Then nilai = 0.95
 
-        ' ✅ FIX BUG: VALIDASI currNum >= 0 DAN < COUNT
-        If nilai >= 0 AndAlso currNum >= 0 AndAlso currNum < dataSoal.Rows.Count Then
-            Dim row As DataPertanyaanRow = CType(dataSoal.Rows(currNum), DataPertanyaanRow)
+        If nilai >= 0 AndAlso currNum >= 0 AndAlso currNum < dataSoal.Count Then
+            Dim row = dataSoal(currNum)
             row.JawabanUser = nilai
 
-            ' ✅ UPDATE STATUS SETIAP KALI ADA JAWABAN BARU
             UpdateStatusSubmitButton()
             UpdateWarnaButtonNomor()
         End If
@@ -345,7 +345,6 @@ Public Class FPertanyaan
     Private Sub ButtonSubmit_Click(sender As Object, e As EventArgs) Handles ButtonSubmit.Click
         SimpanJawabanSementara()
 
-        ' ✅ VALIDASI AKHIR (DOUBLE CHECK)
         If Not CekSemuaSoalSudahDijawab() Then
             MessageBox.Show("Mohon jawab semua pertanyaan terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
@@ -354,12 +353,10 @@ Public Class FPertanyaan
         SimpanKeDatabase()
 
         If phase = 1 Then
-            ' ✅ SIMPAN SKOR RUMPUN SETELAH FASE 1
             Dim skorRumpun As Dictionary(Of String, Double) = HitungSkorMentah()
             SimpanSkorRumpun(sessionId, skorRumpun)
 
             phase = 2
-            ' ✅ RESET BUTTON SUBMIT UNTUK FASE 2
             ButtonSubmit.Enabled = False
             ProsesLogikaFase2()
         Else
@@ -382,7 +379,7 @@ Public Class FPertanyaan
     Private Sub SimpanKeDatabase()
         Using conn = GetConnection()
             conn.Open()
-            For Each row As DataPertanyaanRow In dataSoal.Rows
+            For Each row In dataSoal
                 Dim delQ As String = "DELETE FROM [Exam Details] WHERE [id sesi] = @sesi AND [id pertanyaan] = @idTanya"
                 Dim cmdDel As New SqlCommand(delQ, conn)
                 cmdDel.Parameters.AddWithValue("@sesi", sessionId)
@@ -404,11 +401,11 @@ Public Class FPertanyaan
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        If currNum < dataSoal.Rows.Count - 1 Then UbahSoal(currNum + 2)
+        If currNum < dataSoal.Count - 1 Then UbahSoal(currNum + 2)
     End Sub
 
     Private Sub AturStatusTombolNavigasi()
-        Button1.Enabled = (currNum < dataSoal.Rows.Count - 1)
+        Button1.Enabled = (currNum < dataSoal.Count - 1)
         Button2.Enabled = (currNum > 0)
     End Sub
 

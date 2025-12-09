@@ -43,26 +43,45 @@ Sistem ini membedakan diri dari sistem pakar konvensional dengan menggunakan:
 
 ## ✨ Fitur Utama
 
+### 🎭 Landing Page dengan Quote Dinamis
+
+- **Random Inspirational Quotes** - 10 kutipan motivasi dipilih secara acak
+- **Dynamic Subtitles** - 10 subtitle berbeda untuk variasi tampilan
+- **Centered Layout** - Quote dan subtitle diposisikan otomatis di tengah panel
+
+### 📝 Form Input Data (FMain)
+
+- **Nama Lengkap** (Required) - Validasi tidak boleh kosong
+- **Email** (Required) - Validasi format email dengan regex pattern
+- **Program Studi** (Required) - Dropdown selection (TI/TMJ/TMD)
+- **Minat Karir** (Optional) - **SINGLE selection** dari 25 profesi atau KOSONG
+- **Real-time Validation** - Error provider dengan feedback langsung
+- **Smart Button State** - Tombol "Lanjut" disabled sampai input valid
+
 ### 🧪 Sistem Testing Adaptif Dua Fase
 
 #### **Fase 1: Pertanyaan Umum (10 Soal)**
+
 - 2 soal per rumpun karir (5 rumpun × 2)
 - Mengidentifikasi kemampuan dasar pengguna
 - Menentukan arah pertanyaan fase 2
 
 #### **Fase 2: Pertanyaan Khusus (20 Soal)**
-Sistem secara otomatis memilih 1 dari 4 skenario:
+
+Sistem secara otomatis memilih 1 dari **5 skenario**:
 
 | Skenario | Kondisi | Distribusi Soal |
 |----------|---------|-----------------|
-| **Dominant** | Gap > 20% & Skor Tertinggi > 40% | 20 soal dari rumpun terkuat (4 soal/sub-karir) |
-| **Hybrid** | Gap ≤ 20% & Skor Tertinggi > 40% | 10 soal juara 1 + 10 soal juara 2 (2 soal/sub-karir) |
-| **Beginner** | Skor Tertinggi < 40% & Ada Minat | 20 soal dari rumpun minat (2/4 soal/sub-karir) |
-| **Null** | Skor Tertinggi < 40% & Tanpa Minat | 20 soal Creative & Product (4 soal/sub-karir) |
+| **Dominant** | Gap > 20% & Top Score > 40% & Interest matches Top 2 | 20 soal dari rumpun terkuat (4 soal/profesi) |
+| **Hybrid** | Gap ≤ 20% & Top Score > 40% & Interest matches Top 2 | 10 soal juara 1 + 10 soal juara 2 (2 soal/profesi) |
+| **Special Hybrid** | Top Score > 40% & Interest NOT match Top 2 | 10 soal juara 1 + 10 soal minat (2 soal/profesi) |
+| **Beginner** | Top Score < 40% & Ada Minat | 20 soal dari rumpun minat (4 soal/profesi) |
+| **Null** | Top Score < 40% & Tanpa Minat | 20 soal Creative & Product (4 soal/profesi) |
 
-**Catatan Penting**: 
-- Jika user tidak memilih minat, sistem akan tetap memilih skenario Dominant atau Hybrid berdasarkan gap dan top score
-- Skenario Special Hybrid telah diintegrasikan ke dalam Hybrid scenario untuk konsistensi
+**Catatan Penting**:
+- User hanya bisa memilih **SATU minat** atau **TIDAK MEMILIH** sama sekali
+- Jika user tidak memilih minat, sistem akan pilih skenario Dominant/Hybrid (jika skill > 40%) atau Null (jika skill < 40%)
+- Special Hybrid muncul ketika user punya skill tinggi tapi minatnya berbeda dari top 2 cluster
 
 ### 📊 Skala Likert 5 Poin
 
@@ -91,7 +110,18 @@ Sistem secara otomatis memilih 1 dari 4 skenario:
 └─────────────────┴──────────────────┴───────────────────┘
 ```
 
-**Threshold**: Skill ≥ 0.5 = Tinggi, Interest ≥ 0.5 (variabel minat = 1.0) = Tinggi
+**Threshold**: Skill ≥ 0.5 = Tinggi, Interest = 1.0 (dipilih) atau 0.0 (tidak dipilih)
+
+**Mengapa Top 3 Bisa Masuk Reality Check?**
+
+- **Reality Check** = Skill tinggi (≥0.5) TAPI user TIDAK memilih profesi ini sebagai minat
+- **Contoh**: User jago Software Engineering (score 0.85) tapi minatnya UI Designer (Creative)
+- **Rekomendasi**: "Kamu berbakat di sini, yakin ga mau pertimbangkan?"
+
+**Kapan Reality Check Kosong?**
+1. ✅ Semua profesi dengan skill tinggi JUG diminati (masuk Golden Match)
+2. ✅ Semua profesi punya skill rendah (<0.5) - tidak ada yang masuk Reality Check
+3. ✅ User pilih minat yang match dengan skill terbaik mereka
 
 #### **Linearity Analysis**
 
@@ -110,6 +140,7 @@ Sistem secara otomatis memilih 1 dari 4 skenario:
 IF jawaban_fase1 THEN tentukan_skenario
 IF skenario = "Dominant" THEN ambil_soal_rumpun_tertinggi
 IF skenario = "Hybrid" THEN ambil_soal_2_rumpun_tertinggi
+IF skenario = "Special Hybrid" THEN ambil_soal_rumpun_tertinggi + rumpun_minat
 IF skenario = "Beginner" THEN ambil_soal_rumpun_minat
 IF skenario = "Null" THEN ambil_soal_creative_product
 ```
@@ -162,15 +193,19 @@ dimana:
 
 ```
 ┌─────────────────┐
-│  START          │
+│  FStart         │
+│  (Landing Page) │
+│  Random Quote   │
 └────────┬────────┘
          │
-    ┌────▼────┐
-    │ Input:  │
-    │ - Nama  │
-    │ - Prodi │
-    │ - Minat │
-    └────┬────┘
+    ┌────▼────────┐
+    │  FMain      │
+    │  Input:     │
+    │  - Nama     │
+    │  - Email    │
+    │  - Prodi    │
+    │  - Minat (1)│
+    └────┬────────┘
          │
 ┌────────▼────────┐
 │ FASE 1:         │
@@ -186,17 +221,17 @@ dimana:
     ┌────▼─────┐
     │ Skenario │
     │ Decision │
-    └─┬──┬──┬──┬─┘
-      │  │  │  │
-  ┌───▼┐┌▼┐┌▼┐┌▼───┐
-  │Dom││Hy││Be││Null│
-  └───┬┘└┬┘└┬┘└┬───┘
-      └──┬┘  └──┬───┘
-         │      │
-    ┌────▼──────▼────┐
-    │ FASE 2:         │
-    │ 20 Soal Spesifik│
-    └────────┬────────┘
+    └─┬─┬─┬─┬─┬─┘
+      │ │ │ │ │
+  ┌───▼┐▼┐▼┐▼┐▼───┐
+  │Dom││Hy││SH││Be││Null│
+  └───┬┘└┬┘└┬┘└┬┘└┬──┘
+      └──┴──┴──┴──┘
+         │
+    ┌────▼──────────┐
+    │ FASE 2:       │
+    │ 20 Soal Adaptif│
+    └────────┬──────┘
              │
     ┌────────▼────────┐
     │ Perhitungan:    │
@@ -224,15 +259,15 @@ Si Pakar/
 ├── Database/
 │   └── Database Sistem Pakar.mdf  # LocalDB database file
 ├── Forms/
-│   ├── FStart.vb                  # Landing page + input data
-│   ├── FMain.vb                   # Menu utama
-│   ├── FPertanyaan.vb             # Fase 1 & 2 testing
-│   ├── FHasil.vb                  # Tampilan hasil akhir
-│   └── FUpdateDataUser.vb         # Update data user
+│   ├── FStart.vb                  # Landing page (random quotes)
+│   ├── FMain.vb                   # Input data (nama, email, prodi, 1 minat)
+│   ├── FPertanyaan.vb             # Form testing (Fase 1 & 2)
+│   ├── FHasil.vb                  # Form hasil akhir
+│   └── FUpdateDataUser.vb         # Form update data user
 ├── Modul/                         # ⚠️ BUKAN "Model/"
 │   ├── Koneksi.vb                 # Database connection
 │   ├── Data User.vb               # CRUD user
-│   ├── Sesi Ujian.vb              # Session management
+│   ├── Sesi Ujian.vb              # Manajemen sesi ujian
 │   ├── PertanyaanModel.vb         # Model pertanyaan
 │   ├── Profesi.vb                 # CRUD profesi
 │   ├── Prodi.vb                   # CRUD program studi
@@ -342,276 +377,262 @@ cd Sistem-Pakar-Profil-Lulusan-TIK
 ```
 
 #### 2. Setup Database
-Database menggunakan **LocalDB file** (`.mdf`) yang sudah disertakan dalam repository:
-- File lokasi: `Si Pakar\Database\Database Sistem Pakar.mdf`
-- Database sudah berisi 10 tabel + 110+ data soal
-- **Tidak perlu menjalankan script SQL manual**
 
-#### 3. Konfigurasi Connection String
-Edit file `Si Pakar\Modul\Koneksi.vb`:
+Proyek ini menyediakan **DUA opsi** setup database:
+
+##### **Opsi A: Menggunakan LocalDB File (Recommended - Termudah)** ✅
+
+Database file `.mdf` sudah disertakan dalam repository dan siap pakai:
+
+- **File lokasi**: `Si Pakar\Database\Database Sistem Pakar.mdf`
+- **Isi**: 10 tabel + 110 pertanyaan + 25 profesi
+- **Keuntungan**: Tidak perlu setup manual, langsung jalan
+
+**Connection String** sudah dikonfigurasi otomatis di `Koneksi.vb`:
+
 ```vb
-Public Function GetConnection()
-    ' ⚠️ PENTING: Sesuaikan path dengan lokasi project Anda
-    Return New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\NAMA_USER_ANDA\source\repos\Sistem Pakar Profil Lulusan TIK\Si Pakar\Database\Database Sistem Pakar.mdf;Integrated Security=True")
-End Function
+Module Koneksi
+    Public Function GetConnection()
+#If PUBLISH Then
+        ' PRODUCTION MODE: Path relatif (otomatis)
+        Dim path = AppDomain.CurrentDomain.BaseDirectory
+        Dim dbPath = "Database\Database Sistem Pakar.mdf"
+        Dim fullPath As String = IO.Path.Combine(path, dbPath)
+        Return New SqlConnection($"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={fullPath};Integrated Security=True")
+#Else
+        ' DEBUG MODE: Path absolut (developer-specific)
+        Return New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Rizlrad Fz\source\repos\Sistem Pakar Profil Lulusan TIK\Si Pakar\Database\Database Sistem Pakar.mdf;Integrated Security=True")
+#End If
+    End Function
+End Module
 ```
+
+**⚠️ PENTING untuk Development:**
+Jika lokasi project Anda **BERBEDA** dari `C:\Users\Rizlrad Fz\source\repos\...`, Anda perlu **update path di mode DEBUG**:
+
+1. Buka file `Si Pakar\Modul\Koneksi.vb`
+2. Edit bagian `#Else` (DEBUG mode):
+   ```vb
+   #Else
+       ' Ganti path ini sesuai lokasi project Anda
+       Return New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\NAMA_USER_ANDA\source\repos\Sistem Pakar Profil Lulusan TIK\Si Pakar\Database\Database Sistem Pakar.mdf;Integrated Security=True")
+   #End If
+   ```
 
 **Cara cepat mendapatkan path yang benar**:
 1. Klik kanan pada file `Database Sistem Pakar.mdf` di Solution Explorer
-2. Pilih "Copy Full Path"
+2. Pilih **"Copy Full Path"**
 3. Paste ke connection string bagian `AttachDbFilename=...`
 
+**✅ Untuk Production/Publish**: Mode `PUBLISH` akan otomatis menggunakan path relatif, jadi **tidak perlu edit manual**.
+
+---
+
+##### **Opsi B: Menggunakan SQL Script (Manual Setup)** 🔧
+
+Jika Anda ingin setup database dari awal atau menggunakan SQL Server instance (bukan LocalDB):
+
+1. **Buka SQL Server Management Studio (SSMS)** atau **Azure Data Studio**
+
+2. **Buat database baru**:
+   ```sql
+   CREATE DATABASE [Database Sistem Pakar];
+   GO
+   USE [Database Sistem Pakar];
+   GO
+   ```
+
+3. **Jalankan script SQL**:
+   - File: `Si Pakar\Database\Database.sql`
+   - Script ini akan:
+     - Membuat **10 tabel** dengan relasi Foreign Key
+     - Insert **110 pertanyaan** (10 fase 1 + 100 fase 2)
+     - Insert **25 profesi** (5 per rumpun)
+     - Insert **9 mapping linearitas**
+     - Insert data master (Rumpun, Prodi)
+
+4. **Update Connection String di `Koneksi.vb`**:
+   ```vb
+   Module Koneksi
+       Public Function GetConnection()
+           ' Untuk SQL Server Instance (bukan LocalDB)
+           Return New SqlConnection("Server=YOUR_SERVER_NAME;Database=Database Sistem Pakar;Integrated Security=True")
+       End Function
+   End Module
+   ```
+
+**Kapan menggunakan Opsi B?**
+- ✅ Deploy ke server production
+- ✅ Menggunakan SQL Server Express/Standard/Enterprise
+- ✅ Perlu kontrol penuh atas database
+- ✅ Tim development dengan shared database server
+
+---
+
+#### 3. Konfigurasi Build Mode
+
+Proyek ini memiliki **2 build configuration**:
+
+| Mode | Condition | Connection String | Use Case |
+|------|-----------|-------------------|----------|
+| **DEBUG** | `#Else` | Path absolut (hardcoded) | Development di local machine |
+| **PUBLISH** | `#If PUBLISH Then` | Path relatif (dynamic) | Production/Deployment |
+
+**Untuk Development** (DEBUG mode):
+```bash
+# Di Visual Studio:
+# 1. Pastikan Configuration = "Debug"
+# 2. Path di Koneksi.vb sudah benar
+# 3. Press F5 untuk run
+```
+
+**Untuk Production** (PUBLISH mode):
+```bash
+# Di Visual Studio:
+# 1. Klik Build > Publish Si Pakar
+# 2. Pilih target folder
+# 3. Click "Publish"
+# 4. File .mdf akan di-copy otomatis ke folder output
+# 5. Path database akan resolved secara relatif
+```
+
+---
+
 #### 4. Build & Run
+
+##### **Development Mode (F5 - Debug)**
 ```bash
 # Dari Visual Studio:
-# 1. Open Solution: Si Pakar.sln
-# 2. Set 'Si Pakar' sebagai Startup Project
-# 3. Press F5 atau klik Start
+1. Open Solution: Si Pakar.sln
+2. Set 'Si Pakar' sebagai Startup Project (klik kanan project > Set as Startup Project)
+3. Pastikan Configuration = "Debug"
+4. Press F5 atau klik "Start"
+```
+
+##### **Production Mode (Publish)**
+```bash
+# Dari Visual Studio:
+1. Klik kanan pada project "Si Pakar" > Publish
+2. Pilih target: Folder
+3. Atur lokasi output (misal: C:\Deploy\SistemPakar)
+4. Klik "Publish"
+5. Copy folder Database/ ke lokasi yang sama dengan .exe
+6. Jalankan Si Pakar.exe
 ```
 
 ---
 
-## 📖 Cara Penggunaan
+### Troubleshooting Instalasi
 
-### 1. Halaman Start
-- Masukkan **Nama Lengkap**
-- Pilih **Program Studi** (TI/TMJ/TMD)
-- Pilih **Minat Karir** (maksimal 3 dari 25 profesi) - **OPSIONAL**
-- Klik **"MULAI TES"**
+#### ❌ **Error: "Cannot open database 'Database Sistem Pakar'"**
 
-### 2. Fase 1 - Pertanyaan Umum
-- Akan diberikan **10 soal** umum (2 soal per rumpun)
-- Pilih jawaban sesuai kemampuan Anda (Skala Likert 1-5)
-- Navigasi: Gunakan tombol nomor atau "Sebelumnya/Selanjutnya"
-- **Submit** hanya aktif jika semua soal dijawab (button hijau = sudah dijawab)
+**Solusi**:
+1. Pastikan SQL Server LocalDB terinstal:
+   ```powershell
+   sqllocaldb info
+   ```
+   Jika tidak ada, install dari Visual Studio Installer:
+   - Buka Visual Studio Installer
+   - Modify > Individual Components
+   - Cari "SQL Server Express 2019 LocalDB" ✓
+   - Install
 
-### 3. Sistem Menentukan Skenario
-Sistem akan menampilkan (dalam mode DEBUG):
-- **"Skenario Terdeteksi: Dominant"** → Fokus pada 1 rumpun terkuat
-- **"Skenario Terdeteksi: Hybrid"** → Menguji 2 rumpun teratas
-- **"Skenario Terdeteksi: Beginner"** → Berbasis minat
-- **"Skenario Terdeteksi: Null"** → Default Creative & Product
+2. Pastikan instance MSSQLLocalDB berjalan:
+   ```powershell
+   sqllocaldb start MSSQLLocalDB
+   ```
 
-### 4. Fase 2 - Pertanyaan Khusus
-- **20 soal** spesifik sesuai skenario
-- Sama seperti Fase 1, jawab semua pertanyaan
-- Klik **"LIHAT HASIL AKHIR"** setelah selesai
-
-### 5. Halaman Hasil
-Akan ditampilkan:
-- **Top 3 Karir** (urut berdasarkan skor akhir dengan 2 desimal)
-- **Zona Analisis** (4 zona):
-  - Golden Match (Skill Tinggi + Minat Tinggi) - ⭐⭐⭐
-  - Hidden Gem (Skill Rendah + Minat Tinggi) - 💎
-  - Reality Check (Skill Tinggi + Minat Rendah) - ⚠️
-  - Explorer (Skill Rendah + Minat Rendah) - 🔍
-- **Linearity Analysis** (popup message):
-  - ✅ Linear: Sesuai dengan jurusan
-  - ⚠️ Related: Masih terkait
-  - 🔄 Pivot: Perlu upskilling
+3. Periksa path di `Koneksi.vb` sudah benar
 
 ---
 
-## 📁 Struktur Proyek
+#### ❌ **Error: "System.Data.SqlClient not found"**
 
-```
-Sistem-Pakar-Profil-Lulusan-TIK/
-│
-├── Si Pakar/                          # Main Project
-│   ├── Database/
-│   │   └── Database Sistem Pakar.mdf  # LocalDB database file (BUKAN .sql)
-│   ├── Forms/
-│   │   ├── FStart.vb                  # Form awal (input data user)
-│   │   ├── FMain.vb                   # Form menu utama
-│   │   ├── FPertanyaan.vb             # Form testing (Fase 1 & 2)
-│   │   ├── FHasil.vb                  # Form hasil akhir
-│   │   └── FUpdateDataUser.vb         # Form update data user
-│   ├── Modul/                         # ⚠️ BUKAN "Model/"
-│   │   ├── Koneksi.vb                 # Database connection
-│   │   ├── Data User.vb               # CRUD user
-│   │   ├── Sesi Ujian.vb              # Manajemen sesi ujian
-│   │   ├── PertanyaanModel.vb         # Model pertanyaan
-│   │   ├── Profesi.vb                 # CRUD profesi
-│   │   ├── Prodi.vb                   # CRUD program studi
-│   │   ├── Hasil Analisis.vb          # Logika DST, scoring, zona
-│   │   └── Pengaturan Sesi.vb         # Session utilities
-│   ├── Intsruksi Buat Mbah/
-│   │   ├── Dokumen.md                 # Dokumentasi metode
-│   │   ├── Flowchart.md               # Diagram alur sistem
-│   │   ├── Pertanyaan.md              # Bank soal lengkap
-│   │   ├── Data Tabel Rumpun.md       # Mapping data
-│   │   └── FITUR_VALIDASI.md          # Dokumentasi fitur validasi
-│   ├── My Project/
-│   │   ├── Application.Designer.vb
-│   │   └── Resources.Designer.vb
-│   ├── ImageRes.Designer.vb
-│   ├── ApplicationEvents.vb
-│   └── Si Pakar.vbproj
-├── README.md                          # Dokumentasi utama (file ini)
-└── LICENSE                            # MIT License
-```
+**Solusi**:
+1. Install NuGet package:
+   ```
+   Tools > NuGet Package Manager > Manage NuGet Packages for Solution
+   ```
+2. Search: `Microsoft.Data.SqlClient`
+3. Install untuk project "Si Pakar"
+4. Rebuild solution
 
 ---
 
-## 📊 Progress Implementasi
+#### ❌ **Error: "Access Denied" saat akses .mdf file**
 
-### ✅ Selesai (100%)
-
-| Fitur | Status | Keterangan |
-|-------|--------|------------|
-| **Database Schema** | ✅ Done | 10 tabel + relasi lengkap |
-| **Input Data User** | ✅ Done | Form FStart - nama, prodi, minat (opsional) |
-| **Fase 1 Testing** | ✅ Done | 10 soal umum + navigasi |
-| **Validasi Jawaban** | ✅ Done | Button submit disabled sampai lengkap |
-| **Visual Indicator** | ✅ Done | Button hijau = sudah dijawab |
-| **Adaptive Logic** | ✅ Done | 4 skenario (Dominant/Hybrid/Beginner/Null) |
-| **No Interest Handling** | ✅ Done | Sistem tetap berfungsi tanpa minat user |
-| **Fase 2 Testing** | ✅ Done | 20 soal adaptif + distribusi per sub-karir |
-| **DST Calculation** | ✅ Done | Perhitungan massa keyakinan + normalisasi |
-| **Interest Boosting** | ✅ Done | +30% untuk profesi diminati |
-| **Zona Karir** | ✅ Done | 4 zona (Golden/Hidden/Reality/Explorer) |
-| **Linearity Analysis** | ✅ Done | Mapping prodi vs rumpun hasil |
-| **Exam Rumpun Scores** | ✅ Done | Simpan skor per rumpun fase 1 |
-| **Form Hasil** | ✅ Done | Top 3 + Zona + Linearitas |
-| **Form Update User** | ✅ Done | Update data user (FUpdateDataUser) |
-| **JSON Serialization** | ✅ Done | Phase1 score json + Final result json |
-
-### 🚧 Dalam Pengembangan
-
-| Fitur | Status | Target |
-|-------|--------|--------|
-| **Export PDF** | 🚧 Planned | Print/export hasil ke PDF |
+**Solusi**:
+1. **Mode DEBUG**: Pastikan path mengarah ke folder project Anda
+2. **Mode PUBLISH**: Pastikan folder Database/ berada di folder yang sama dengan .exe
+3. Run Visual Studio sebagai Administrator (klik kanan > Run as Administrator)
 
 ---
 
-## 🧪 Testing & Debugging
+#### ⚠️ **Database file terkunci (in use)**
 
-### Test Case Scenario
-
-#### **Test 1: Skenario Dominant**
-```
-Input:
-- User: Mahasiswa TI
-- Minat: Backend Developer
-- Fase 1: 
-  - SE (8 poin) = 80%
-  - DI (3 poin) = 30%
-  - Gap: 50% > 20% ✓
-
-Expected:
-- Skenario: Dominant
-- Fase 2: 20 soal SE (4 soal × 5 sub-karir)
-- Top Result: Backend Developer (dengan interest boost)
-```
-
-#### **Test 2: Skenario Hybrid**
-```
-Input:
-- User: Mahasiswa TMJ
-- Minat: Network Engineer
-- Fase 1:
-  - IN (6 poin) = 60%
-  - CS (5 poin) = 50%
-  - Gap: 10% < 20% ✓
-  
-Expected:
-- Skenario: Hybrid
-- Fase 2: 10 soal IN + 10 soal CS (2 soal × 5 sub-karir)
-- Linearity: Linear (TMJ matches IN & CS)
-```
-
-#### **Test 3: Skenario Null (No Interest)**
-```
-Input:
-- User: Mahasiswa TI
-- Minat: (tidak dipilih)
-- Fase 1: Semua < 40%
-
-Expected:
-- Skenario: Null
-- Fase 2: 20 soal CP (Creative & Product)
-- No interest boost applied
-```
-
-### Bug Fixes
-
-#### **Bug #1: Soal Fase 2 Otomatis Terisi** ✅ Fixed
-- **Problem**: Satu soal fase 2 terisi otomatis dengan jawaban fase 1
-- **Root Cause**: `currNum` tidak di-reset + RadioButton masih checked
-- **Solution**: Reset `currNum = 0` dan `ResetRadioButtons()` di `ProsesLogikaFase2()`
-
-#### **Bug #2: Index Out of Range** ✅ Fixed
-- **Problem**: Error saat load fase 2
-- **Root Cause**: Validasi `currNum` kurang ketat
-- **Solution**: Triple validation di `SimpanJawabanSementara()`
-
-#### **Bug #3: Question ID Pipe Delimiter** ✅ Fixed
-- **Problem**: Kode profesi ter-append di ID pertanyaan (`SE01|BED`)
-- **Root Cause**: Temporary workaround untuk mapping profession
-- **Solution**: Split dan restore ID asli di `FilterSoalDistribusi()` sebelum save
+**Solusi**:
+1. Stop aplikasi yang sedang berjalan
+2. Disconnect semua koneksi di SSMS:
+   ```sql
+   USE master;
+   GO
+   ALTER DATABASE [Database Sistem Pakar] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+   GO
+   ALTER DATABASE [Database Sistem Pakar] SET MULTI_USER;
+   GO
+   ```
+3. Atau restart SQL Server LocalDB:
+   ```powershell
+   sqllocaldb stop MSSQLLocalDB
+   sqllocaldb start MSSQLLocalDB
+   ```
 
 ---
 
-## 📝 Lisensi
+### Verifikasi Instalasi
 
-Proyek ini dilisensikan di bawah **MIT License** - lihat file [LICENSE](LICENSE) untuk detail.
+Setelah instalasi selesai, verifikasi dengan langkah berikut:
 
+1. ✅ **Run aplikasi** - Form FStart muncul dengan random quote
+2. ✅ **Input data** - Form FMain validasi email dan nama berhasil
+3. ✅ **Phase 1** - 10 soal muncul dengan navigasi lancar
+4. ✅ **Phase 2** - Scenario detection bekerja (check console DEBUG)
+5. ✅ **Results** - Form FHasil menampilkan Top 3 + Zona + Linearity
+
+Jika semua langkah di atas berhasil, instalasi Anda **SUKSES**! 🎉
+
+---
+
+### Tips Development
+
+**1. Multi-developer Setup:**
+```vb
+' Tambahkan conditional per developer
+#If PUBLISH Then
+    ' Production
+#ElseIf DEVELOPER_A Then
+    Return New SqlConnection("...path developer A...")
+#ElseIf DEVELOPER_B Then
+    Return New SqlConnection("...path developer B...")
+#Else
+    ' Default path
+#End If
 ```
-MIT License
 
-Copyright (c) 2024 [Nama Kelompok/Universitas]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction...
+**2. Gunakan Environment Variable:**
+```vb
+' Alternative: Gunakan variable dari system
+Dim dbPath = Environment.GetEnvironmentVariable("SI_PAKAR_DB_PATH")
+If String.IsNullOrEmpty(dbPath) Then
+    dbPath = "C:\Default\Path\Database Sistem Pakar.mdf"
+End If
 ```
 
----
-
-## 🙏 Ucapan Terima Kasih
-
-- **Github Copilot** - Asisten coding yang luar biasa
-- **Gemini AI** - Untuk brainstorming ide dan dokumentasi
-- **ChatGPT** - Bantuan dalam penulisan dan debugging
-- **Qwen AI** - Sumber referensi tambahan
-
----
-
-## 📧 Kontak & Dukungan
-
-- **GitHub Issues**: [Link ke Issues](https://github.com/maul-lq/Sistem-Pakar-Profil-Lulusan-TIK/issues)
-- **Repository**: [GitHub](https://github.com/maul-lq/Sistem-Pakar-Profil-Lulusan-TIK)
-
----
-
-## 📚 Referensi
-
-1. Shafer, G. (1976). *A Mathematical Theory of Evidence*. Princeton University Press.
-2. Russell, S., & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach* (4th ed.). Pearson.
-3. Microsoft. (2024). *.NET Documentation*. https://docs.microsoft.com/en-us/dotnet/
-4. Microsoft. (2024). *VB.NET Documentation*. https://docs.microsoft.com/en-us/dotnet/visual-basic/
-
----
-
-## 🔮 Roadmap
-
-### Version 2.0 (Future Release)
-- [ ] Export hasil ke PDF/Excel
-- [ ] Analisis statistik global (semua user)
-- [ ] Dashboard visualisasi data
-- [ ] Integrasi Machine Learning untuk prediksi yang lebih akurat
-- [ ] Web-based version (ASP.NET Core)
-- [ ] Mobile App (Xamarin/MAUI)
-- [ ] Multi-language support (English, Indonesian)
-
----
-
-<div align="center">
-
-**⭐ Jika proyek ini membantu Anda, berikan star di GitHub! ⭐**
-
-Made with ❤️ by **[Bahlil]** | **[1920]**
-
-[⬆ Kembali ke atas](#-sistem-pakar-profil-lulusan-tik)
-
-</div>
+**3. Config File (app.config):**
+```xml
+<!-- App.config -->
+<connectionStrings>
+  <add name="SistemPakar" 
+       connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database Sistem Pakar.mdf;Integrated Security=True" 
+       providerName="System.Data.SqlClient" />
+</connectionStrings>

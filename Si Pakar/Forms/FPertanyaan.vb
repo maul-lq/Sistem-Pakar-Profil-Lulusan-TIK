@@ -5,7 +5,6 @@ Public Class FPertanyaan
     Public phase As Short
     Public sessionId As Integer
 
-    ' ✅ GANTI DataPertanyaanDataTable dengan List(Of PertanyaanModel)
     Dim dataSoal As New List(Of PertanyaanModel)()
     Dim currNum As Integer = 0
     Dim scenarioName As String = ""
@@ -69,46 +68,108 @@ Public Class FPertanyaan
 
         Dim gap As Double = juara1.Value - juara2Val
         Dim rumpunTarget1 As String = juara1.Key
+        Dim topScore As Double = juara1.Value
+
+        Dim minatUser As List(Of String) = GetMinatUser(sessionId)
+        Dim rumpunMinat As List(Of String) = GetRumpunDariMinat(minatUser)
 
         Dim kandidatList As New List(Of PertanyaanModel)()
 
-        If gap > 0.2 Then
-            scenarioName = "Dominant"
-            PerbaruiSeknarioUjian(sessionId, scenarioName)
-            kandidatList = AmbilKandidatSoal(rumpunTarget1)
-            kandidatList = FilterSoalDistribusi(kandidatList, 4)
-
-        ElseIf gap <= 0.2 And juara1.Value > 0.4 Then
-            scenarioName = "Hybrid"
-            PerbaruiSeknarioUjian(sessionId, scenarioName)
-            Dim list1 = AmbilKandidatSoal(rumpunTarget1)
-            list1 = FilterSoalDistribusi(list1, 2)
-
-            Dim list2 = AmbilKandidatSoal(rumpunTarget2)
-            list2 = FilterSoalDistribusi(list2, 2)
-
-            kandidatList.AddRange(list1)
-            kandidatList.AddRange(list2)
-
-        Else
-            Dim minatUser As List(Of String) = GetMinatUser(sessionId)
-            Dim rumpunMinat As String = CekIrisanMinat(minatUser, skorRumpun)
-
-            If rumpunMinat <> "" Then
+        If topScore < 0.4 Then
+            If rumpunMinat.Count > 0 Then
                 scenarioName = "Beginner"
                 PerbaruiSeknarioUjian(sessionId, scenarioName)
-                kandidatList = AmbilKandidatSoal(rumpunMinat)
-                kandidatList = FilterSoalDistribusi(kandidatList, 2)
+
+                If rumpunMinat.Count = 1 Then
+                    kandidatList = AmbilKandidatSoal(rumpunMinat(0))
+                    kandidatList = FilterSoalDistribusi(kandidatList, 4)
+                ElseIf rumpunMinat.Count = 2 Then
+                    Dim list1 = AmbilKandidatSoal(rumpunMinat(0))
+                    list1 = FilterSoalDistribusi(list1, 2)
+                    Dim list2 = AmbilKandidatSoal(rumpunMinat(1))
+                    list2 = FilterSoalDistribusi(list2, 2)
+                    kandidatList.AddRange(list1)
+                    kandidatList.AddRange(list2)
+                Else
+                    ' If more than 2 interests, use first as primary
+                    kandidatList = AmbilKandidatSoal(rumpunMinat(0))
+                    kandidatList = FilterSoalDistribusi(kandidatList, 4)
+                End If
             Else
                 scenarioName = "Null"
                 PerbaruiSeknarioUjian(sessionId, scenarioName)
                 kandidatList = AmbilKandidatSoal("CP")
                 kandidatList = FilterSoalDistribusi(kandidatList, 4)
             End If
+        Else
+            ' If user has no minat selected, allow Dominant/Hybrid based on gap/topScore alone
+            Dim minatMatchTop As Boolean
+            If rumpunMinat.Count = 0 Then
+                minatMatchTop = True
+            Else
+                minatMatchTop = rumpunMinat.Contains(rumpunTarget1) Or rumpunMinat.Contains(rumpunTarget2)
+            End If
+
+            If gap > 0.2 And minatMatchTop Then
+                scenarioName = "Dominant"
+                PerbaruiSeknarioUjian(sessionId, scenarioName)
+                kandidatList = AmbilKandidatSoal(rumpunTarget1)
+                kandidatList = FilterSoalDistribusi(kandidatList, 4)
+            ElseIf gap <= 0.2 And minatMatchTop Then
+                scenarioName = "Hybrid"
+                PerbaruiSeknarioUjian(sessionId, scenarioName)
+                Dim list1 = AmbilKandidatSoal(rumpunTarget1)
+                list1 = FilterSoalDistribusi(list1, 2)
+                Dim list2 = AmbilKandidatSoal(rumpunTarget2)
+                list2 = FilterSoalDistribusi(list2, 2)
+                kandidatList.AddRange(list1)
+                kandidatList.AddRange(list2)
+            Else
+                ' Merge Special Hybrid into Hybrid: always produce a 10+10 split
+                scenarioName = "Hybrid"
+                PerbaruiSeknarioUjian(sessionId, scenarioName)
+                Dim list1 = AmbilKandidatSoal(rumpunTarget1)
+                list1 = FilterSoalDistribusi(list1, 2)
+
+                Dim list2 As List(Of PertanyaanModel)
+                If rumpunMinat.Count > 0 Then
+                    ' if user has interest but it didn't match top2, use that interest as second group
+                    list2 = AmbilKandidatSoal(rumpunMinat(0))
+                ElseIf rumpunTarget2 <> "" Then
+                    list2 = AmbilKandidatSoal(rumpunTarget2)
+                Else
+                    ' fallback to top1 if no second rumpun available
+                    list2 = AmbilKandidatSoal(rumpunTarget1)
+                End If
+
+                list2 = FilterSoalDistribusi(list2, 2)
+                kandidatList.AddRange(list1)
+                kandidatList.AddRange(list2)
+            End If
+        End If
+
+        ' Ensure we have 20 questions. If FilterSoalDistribusi returned fewer (e.g., missing questions in DB), fill
+        If kandidatList.Count < 20 Then
+            Dim needed = 20 - kandidatList.Count
+            ' Try to fill from top rumpun first, then second, then CP
+            Dim filler As New List(Of PertanyaanModel)()
+            filler.AddRange(AmbilKandidatSoal(rumpunTarget1))
+            If rumpunTarget2 <> "" Then filler.AddRange(AmbilKandidatSoal(rumpunTarget2))
+            filler.AddRange(AmbilKandidatSoal("CP"))
+
+            ' Remove duplicates by IdPertanyaan
+            Dim existingIds = New HashSet(Of String)(kandidatList.Select(Function(s) s.IdPertanyaan))
+            For Each f In filler
+                If kandidatList.Count >= 20 Then Exit For
+                If Not existingIds.Contains(f.IdPertanyaan) Then
+                    kandidatList.Add(f)
+                    existingIds.Add(f.IdPertanyaan)
+                End If
+            Next
         End If
 
         dataSoal.Clear()
-        dataSoal.AddRange(kandidatList)
+        dataSoal.AddRange(kandidatList.Take(20))
 
         UpdateTampilanAwal()
     End Sub
@@ -131,9 +192,8 @@ Public Class FPertanyaan
                 model.ExpertWeight = Convert.ToDouble(r("expert weight"))
                 model.JawabanUser = -1.0
 
-                ' Simpan kode profesi untuk keperluan filtering
                 If Not IsDBNull(r("kode profesi")) Then
-                    model.IdPertanyaan &= "|" & r("kode profesi").ToString() ' Temporary storage
+                    model.IdPertanyaan &= "|" & r("kode profesi").ToString()
                 End If
 
                 list.Add(model)
@@ -145,17 +205,13 @@ Public Class FPertanyaan
 
     Private Function FilterSoalDistribusi(listSoal As List(Of PertanyaanModel), maxPerSub As Integer) As List(Of PertanyaanModel)
         Dim hasil As New List(Of PertanyaanModel)()
-
-        ' Group by kode profesi (extract dari IdPertanyaan yang temporary storage)
         Dim grouped As New Dictionary(Of String, List(Of PertanyaanModel))()
 
         For Each soal In listSoal
-            ' Extract kode profesi dari temporary storage
             Dim parts = soal.IdPertanyaan.Split("|"c)
             Dim idAsli = parts(0)
             Dim kodeProfesi = If(parts.Length > 1, parts(1), "UNKNOWN")
 
-            ' Restore IdPertanyaan ke nilai asli
             soal.IdPertanyaan = idAsli
 
             If Not grouped.ContainsKey(kodeProfesi) Then
@@ -164,7 +220,6 @@ Public Class FPertanyaan
             grouped(kodeProfesi).Add(soal)
         Next
 
-        ' Ambil maxPerSub dari setiap profesi
         For Each kvp In grouped
             hasil.AddRange(kvp.Value.Take(maxPerSub))
         Next
@@ -203,13 +258,43 @@ Public Class FPertanyaan
         Dim minat As New List(Of String)
         Using conn = GetConnection()
             conn.Open()
-            Dim q As String = "SELECT u.[kode rumpun] FROM [Data User] u JOIN [Sesi Ujian] s ON u.[Id user] = s.[Id user] WHERE s.[Id sesi] = @ids"
+            Dim q As String = "SELECT u.[profesi] FROM [Data User] u JOIN [Sesi Ujian] s ON u.[Id user] = s.[Id user] WHERE s.[Id sesi] = @ids"
             Dim cmd As New SqlCommand(q, conn)
             cmd.Parameters.AddWithValue("@ids", idSesi)
             Dim res = cmd.ExecuteScalar()
-            If res IsNot Nothing Then minat.Add(res.ToString())
+            If res IsNot Nothing AndAlso Not IsDBNull(res) Then
+                Dim profesiStr = res.ToString().Trim()
+                If profesiStr <> "" Then
+                    Dim profesiList = profesiStr.Split(","c)
+                    For Each p In profesiList
+                        Dim t = p.Trim()
+                        If t <> "" Then
+                            minat.Add(t)
+                        End If
+                    Next
+                End If
+            End If
         End Using
         Return minat
+    End Function
+
+    Private Function GetRumpunDariMinat(profesiList As List(Of String)) As List(Of String)
+        Dim rumpunList As New List(Of String)
+
+        Using conn = GetConnection()
+            conn.Open()
+            For Each profesi In profesiList
+                Dim q As String = "SELECT [kode rumpun] FROM Profesi WHERE [nama profesi] = @profesi"
+                Dim cmd As New SqlCommand(q, conn)
+                cmd.Parameters.AddWithValue("@profesi", profesi)
+                Dim res = cmd.ExecuteScalar()
+                If res IsNot Nothing AndAlso Not rumpunList.Contains(res.ToString()) Then
+                    rumpunList.Add(res.ToString())
+                End If
+            Next
+        End Using
+
+        Return rumpunList
     End Function
 
     Private Function CekIrisanMinat(minatUser As List(Of String), skorRumpun As Dictionary(Of String, Double)) As String
@@ -255,7 +340,9 @@ Public Class FPertanyaan
 
         If phase = 2 Then
             GroupBoxTopik.Text = "Pertanyaan - Lanjutan"
+#If DEBUG Then
             MessageBox.Show("Skenario Terdeteksi: " & scenarioName, "Info")
+#End If
             ButtonSubmit.Text = "LIHAT HASIL AKHIR"
         End If
 
@@ -410,6 +497,7 @@ Public Class FPertanyaan
     End Sub
 
     Private Sub FPertanyaan_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        hapusHasilTesIni(sessionId, True)
         Application.Exit()
     End Sub
 End Class

@@ -45,6 +45,10 @@ Partial Class FHasil
         PictureBox6 = New PictureBox()
         PictureBox7 = New PictureBox()
         Panel1 = New Panel()
+        ButtonGantiDataUser = New Button()
+        LabelEmail = New Label()
+        LabelUsername = New Label()
+        CheckBoxDonSev = New CheckBox()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
@@ -170,7 +174,7 @@ Partial Class FHasil
         ButtonKembaliKeAwal.Location = New Point(348, 405)
         ButtonKembaliKeAwal.Name = "ButtonKembaliKeAwal"
         ButtonKembaliKeAwal.Size = New Size(97, 33)
-        ButtonKembaliKeAwal.TabIndex = 12
+        ButtonKembaliKeAwal.TabIndex = 3
         ButtonKembaliKeAwal.Text = "&Kembali"
         ButtonKembaliKeAwal.UseVisualStyleBackColor = True
         ' 
@@ -179,8 +183,8 @@ Partial Class FHasil
         ButtonPrint.Location = New Point(691, 405)
         ButtonPrint.Name = "ButtonPrint"
         ButtonPrint.Size = New Size(97, 33)
-        ButtonPrint.TabIndex = 13
-        ButtonPrint.Text = "Print Hasil"
+        ButtonPrint.TabIndex = 2
+        ButtonPrint.Text = "&Print Hasil"
         ButtonPrint.UseVisualStyleBackColor = True
         ' 
         ' PictureBox1
@@ -255,6 +259,10 @@ Partial Class FHasil
         ' 
         ' Panel1
         ' 
+        Panel1.Controls.Add(ButtonGantiDataUser)
+        Panel1.Controls.Add(LabelEmail)
+        Panel1.Controls.Add(LabelUsername)
+        Panel1.Controls.Add(CheckBoxDonSev)
         Panel1.Controls.Add(ButtonPrint)
         Panel1.Controls.Add(PictureBox5)
         Panel1.Controls.Add(ButtonKembaliKeAwal)
@@ -263,6 +271,43 @@ Partial Class FHasil
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(800, 450)
         Panel1.TabIndex = 21
+        ' 
+        ' ButtonGantiDataUser
+        ' 
+        ButtonGantiDataUser.Location = New Point(15, 410)
+        ButtonGantiDataUser.Name = "ButtonGantiDataUser"
+        ButtonGantiDataUser.Size = New Size(102, 28)
+        ButtonGantiDataUser.TabIndex = 21
+        ButtonGantiDataUser.Text = "Ganti &Data Anda"
+        ButtonGantiDataUser.UseVisualStyleBackColor = True
+        ' 
+        ' LabelEmail
+        ' 
+        LabelEmail.AutoSize = True
+        LabelEmail.Location = New Point(15, 393)
+        LabelEmail.Name = "LabelEmail"
+        LabelEmail.Size = New Size(42, 15)
+        LabelEmail.TabIndex = 20
+        LabelEmail.Text = "Email: "
+        ' 
+        ' LabelUsername
+        ' 
+        LabelUsername.AutoSize = True
+        LabelUsername.Location = New Point(12, 372)
+        LabelUsername.Name = "LabelUsername"
+        LabelUsername.Size = New Size(45, 15)
+        LabelUsername.TabIndex = 19
+        LabelUsername.Text = "Nama: "
+        ' 
+        ' CheckBoxDonSev
+        ' 
+        CheckBoxDonSev.AutoSize = True
+        CheckBoxDonSev.Location = New Point(462, 413)
+        CheckBoxDonSev.Name = "CheckBoxDonSev"
+        CheckBoxDonSev.Size = New Size(160, 19)
+        CheckBoxDonSev.TabIndex = 1
+        CheckBoxDonSev.Text = "&Jangan Simpan Data Saya"
+        CheckBoxDonSev.UseVisualStyleBackColor = True
         ' 
         ' FHasil
         ' 
@@ -288,6 +333,7 @@ Partial Class FHasil
         Controls.Add(LabelKarir2nd)
         Controls.Add(LabelKarir1st)
         Controls.Add(Panel1)
+        Icon = CType(resources.GetObject("$this.Icon"), Icon)
         Name = "FHasil"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Si Sok Tau"
@@ -299,6 +345,7 @@ Partial Class FHasil
         CType(PictureBox6, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox7, ComponentModel.ISupportInitialize).EndInit()
         Panel1.ResumeLayout(False)
+        Panel1.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -325,4 +372,8 @@ Partial Class FHasil
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents Panel1 As Panel
+    Friend WithEvents CheckBoxDonSev As CheckBox
+    Friend WithEvents LabelEmail As Label
+    Friend WithEvents LabelUsername As Label
+    Friend WithEvents ButtonGantiDataUser As Button
 End Class

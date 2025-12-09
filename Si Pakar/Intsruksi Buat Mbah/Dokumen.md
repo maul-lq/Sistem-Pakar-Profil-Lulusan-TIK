@@ -21,8 +21,7 @@ Mampu	Sering mempraktekkan	0,8
 Sangat Mampu	Sangat menguasai/Ahli	0,95
 
 m(Himpunan)=BobotPakar×F_Pengguna
-
-	Struktur Rumpun Karir: Karir dibagi menjadi 5 rumpun, masing-masing mempunyai 5 sub-karir:
+Struktur Rumpun Karir: Karir dibagi menjadi 5 rumpun, masing-masing mempunyai 5 sub-karir:
 	Software Engineering	: Backend, Frontend, Mobile, Game Programming, Quality Assurance
 	Data & Intellegence	: Data Scientist, AI Engineer, Data Analyst, Data Engineer, BI Analyst
 	Infrastructure		: Network Engineer, System Administrator, DevOps, IoT Engineer, Tech Support
@@ -32,6 +31,7 @@ m(Himpunan)=BobotPakar×F_Pengguna
 	Mekanisme Adaptif
 	Fase 1 - Pertanyaan Umum (10 Soal): Pengguna wajib mengerjakan 2 soal setiap Rumpun untuk menentukan soal pada fase ke-2.
 	Fase 2 - Pertanyaan Khusus (20 Soal): Sistem menghitung skor pada Fase 1 dan menentukan paket soal Fase 2 menggunakan logika berikut:
+```
 	Skenario Dominan (Gap frekuensi Rumpun Juara 1 dan Juara 2 > 20%):
 	Status: Pengguna fokus atau ahli terhadap satu bidang
 	Aksi: Ambil 20 Soal dari rumpun
@@ -49,6 +49,7 @@ m(Himpunan)=BobotPakar×F_Pengguna
 	Aksi: Ambil 20 Soal dari rumpun Creative & Product
 	Distribusi 4 Soal per Sub-Karir
 	Skor Akhir
+```
 Rumus perhitungan skor akhir terdiri dari: Skor Kemampuan (DST), Konstanta Boost, dan Variabel Minat. Lalu, berikut merupakan tabel yang berkaitan dengan kolerasi antara skill dan minat.
 Kondisi	Zona
 Skill Tinggi, Minat Tinggi	Zona Emas

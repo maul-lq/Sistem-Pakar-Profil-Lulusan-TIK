@@ -361,8 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/.github/copilot-instructions.md
-/Si Pakar/.github/copilot-instructions.md
-/Si Pakar/Sampah AI
-/CODING_STANDARDS.md
-/TESTING_GUIDE.md

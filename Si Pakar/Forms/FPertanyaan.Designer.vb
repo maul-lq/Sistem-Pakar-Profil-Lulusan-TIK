@@ -22,6 +22,7 @@ Partial Class FPertanyaan
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FPertanyaan))
         GroupBoxTopik = New GroupBox()
         TableLayoutPanel1 = New TableLayoutPanel()
         FlowLayoutPanelNomorSoal = New FlowLayoutPanel()
@@ -223,6 +224,7 @@ Partial Class FPertanyaan
         ClientSize = New Size(864, 491)
         Controls.Add(GroupBoxTopik)
         Font = New Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Icon = CType(resources.GetObject("$this.Icon"), Icon)
         Margin = New Padding(3, 4, 3, 4)
         MinimumSize = New Size(880, 530)
         Name = "FPertanyaan"

@@ -22,6 +22,7 @@ Partial Class FStart
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FStart))
         Panel1 = New Panel()
         ButtonLakukanTes = New Button()
         LabelSubtitle = New Label()
@@ -80,6 +81,7 @@ Partial Class FStart
         BackColor = Color.FromArgb(CByte(249), CByte(245), CByte(246))
         ClientSize = New Size(859, 427)
         Controls.Add(Panel1)
+        Icon = CType(resources.GetObject("$this.Icon"), Icon)
         Name = "FStart"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Si Sok Tau"

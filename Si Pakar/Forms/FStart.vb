@@ -13,7 +13,6 @@
         "Kualitas adalah prioritas utama kami"
     }
 
-    ' Koleksi subtitle penunjang
     Private subtitles As String() = {
         "Temukan profil karir terbaik Anda",
         "Identifikasi kekuatan dan potensi Anda",

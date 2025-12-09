@@ -25,6 +25,14 @@ Module Hasil_Analisis
         Dim minatRumpun As String = userData("kode_rumpun")
         Dim profesiMinat As String = userData("profesi")
 
+        Dim profesiMinatList As New List(Of String)
+        If Not String.IsNullOrEmpty(profesiMinat) Then
+            Dim splitProfesi = profesiMinat.Split(","c)
+            For Each p In splitProfesi
+                profesiMinatList.Add(p.Trim())
+            Next
+        End If
+
         ' 2. Hitung Skor DST per Profesi (dari Exam Details + Skor Rumpun)
         Dim skorDST As Dictionary(Of String, Double) = HitungSkorDSTProfesi(sessionId)
 
@@ -46,7 +54,7 @@ Module Hasil_Analisis
                 Dim skorDSTVal As Double = If(skorDST.ContainsKey(kodeProfesi), skorDST(kodeProfesi), 0)
 
                 ' Variabel Minat (1.0 jika sesuai minat user, 0.0 jika tidak)
-                Dim variabelMinat As Double = If(namaProfesi = profesiMinat, 1.0, 0.0)
+                Dim variabelMinat As Double = If(profesiMinatList.Contains(namaProfesi), 1.0, 0.0)
 
                 ' Skor Minat
                 Dim skorMinat As Double = KONSTANTA_BOOST * variabelMinat

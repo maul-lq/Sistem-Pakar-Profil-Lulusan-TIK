@@ -7,6 +7,9 @@
     <StartupObject>Sub Main</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsForms</MyType>
+    <PackageIcon>Gemini_Generated_Image_zhv3szzhv3szzhv3.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NeutralLanguage>id-ID</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,6 +60,18 @@
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Downloads\Gemini_Generated_Image_zhv3szzhv3szzhv3.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include=".github\copilot-instructions.md" />
   </ItemGroup>
 
 </Project>

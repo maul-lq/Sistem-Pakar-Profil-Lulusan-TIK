@@ -22,6 +22,8 @@ Partial Class FMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        components = New ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FMain))
         Label1 = New Label()
         TextBoxNama = New TextBox()
         GroupBox1 = New GroupBox()
@@ -32,7 +34,9 @@ Partial Class FMain
         ComboBoxProfesi = New ComboBox()
         Label2 = New Label()
         ComboBoxProgramStudi = New ComboBox()
+        ErrorProvider1 = New ErrorProvider(components)
         GroupBox1.SuspendLayout()
+        CType(ErrorProvider1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' Label1
@@ -137,6 +141,10 @@ Partial Class FMain
         ComboBoxProgramStudi.Size = New Size(177, 28)
         ComboBoxProgramStudi.TabIndex = 3
         ' 
+        ' ErrorProvider1
+        ' 
+        ErrorProvider1.ContainerControl = Me
+        ' 
         ' FMain
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
@@ -145,12 +153,14 @@ Partial Class FMain
         Controls.Add(GroupBox1)
         Font = New Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         FormBorderStyle = FormBorderStyle.FixedSingle
+        Icon = CType(resources.GetObject("$this.Icon"), Icon)
         Margin = New Padding(3, 4, 3, 4)
         Name = "FMain"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Si Sok Tau"
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
+        CType(ErrorProvider1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -164,4 +174,5 @@ Partial Class FMain
     Friend WithEvents ButtonLanjut As Button
     Friend WithEvents TextBoxEmail As TextBox
     Friend WithEvents Label4 As Label
+    Friend WithEvents ErrorProvider1 As ErrorProvider
 End Class

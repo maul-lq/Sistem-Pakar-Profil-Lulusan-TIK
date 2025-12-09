@@ -3,6 +3,9 @@
     Public idSesi As Integer
 
     Private Sub FUpdateDataUser_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+#If DEBUG Then
+        Me.Text &= " (DEBUG)"
+#End If
         TextBoxNama.Text = nama
         TextBoxEmail.Text = email
 
@@ -59,14 +62,18 @@
 
         If String.IsNullOrEmpty(TextBoxNama.Text) Then
             ErrorProviderDataUser.SetError(TextBoxNama, "Nama tidak boleh kosong")
+#If RELEASE Or PUBLISH Then
             isValid = False
+#End If
         End If
 
         ' Simple email pattern: contains @ and a domain part
         Dim pattern As String = "^[^@\s]+@[^@\s]+\.[^@\s]+$"
         If Not System.Text.RegularExpressions.Regex.IsMatch(TextBoxEmail.Text, pattern) Then
             ErrorProviderDataUser.SetError(TextBoxEmail, "Email tidak valid (format: user@domain.tld)")
+#If RELEASE Or PUBLISH Then
             isValid = False
+#End If
         End If
 
         ButtonSimpan.Enabled = isValid

@@ -2,6 +2,9 @@
     Private ErrorProviderMain As New ErrorProvider()
 
     Private Sub FMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+#If DEBUG Then
+        Me.Text &= " (DEBUG)"
+#End If
         'hapus data combobox
         ComboBoxProgramStudi.Items.Clear()
         ComboBoxProfesi.Items.Clear()
@@ -42,21 +45,27 @@
 
         If String.IsNullOrEmpty(name) Then
             ErrorProviderMain.SetError(TextBoxNama, "Nama tidak boleh kosong")
+#If RELEASE Or PUBLISH Then
             isValid = False
+#End If
         End If
 
         Dim pattern As String = "^[^@\s]+@[^@\s]+\.[^@\s]+$"
-        If Not System.Text.RegularExpressions.Regex.IsMatch(email, pattern) Then
+            If Not System.Text.RegularExpressions.Regex.IsMatch(email, pattern) Then
             ErrorProviderMain.SetError(TextBoxEmail, "Email tidak valid (format: user@domain.tld)")
+#If RELEASE Or PUBLISH Then
             isValid = False
+#End If
         End If
 
-        If ComboBoxProgramStudi.SelectedItem Is Nothing OrElse String.IsNullOrEmpty(ComboBoxProgramStudi.SelectedItem.ToString().Trim()) Then
-            ErrorProviderMain.SetError(ComboBoxProgramStudi, "Pilih program studi")
-            isValid = False
+            If ComboBoxProgramStudi.SelectedItem Is Nothing OrElse String.IsNullOrEmpty(ComboBoxProgramStudi.SelectedItem.ToString().Trim()) Then
+                ErrorProviderMain.SetError(ComboBoxProgramStudi, "Pilih program studi")
+#If RELEASE Or PUBLISH Then
+                isValid = False
+#End If
         End If
 
-        ButtonLanjut.Enabled = isValid
+            ButtonLanjut.Enabled = isValid
         Return isValid
     End Function
 

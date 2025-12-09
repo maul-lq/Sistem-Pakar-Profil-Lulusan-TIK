@@ -293,7 +293,7 @@ Partial Class FHasil
         ' LabelUsername
         ' 
         LabelUsername.AutoSize = True
-        LabelUsername.Location = New Point(12, 372)
+        LabelUsername.Location = New Point(15, 372)
         LabelUsername.Name = "LabelUsername"
         LabelUsername.Size = New Size(45, 15)
         LabelUsername.TabIndex = 19

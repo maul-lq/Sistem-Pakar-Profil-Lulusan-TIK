@@ -10,6 +10,9 @@ Public Class FPertanyaan
     Dim scenarioName As String = ""
 
     Private Sub FPertanyaan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+#If DEBUG Then
+        Me.Text &= " (DEBUG)"
+#End If
         If phase = 1 Then
             GroupBoxTopik.Text = "Pertanyaan - Umum"
             MuatSoalFase1()

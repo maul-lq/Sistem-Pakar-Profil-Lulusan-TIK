@@ -37,6 +37,9 @@
     End Sub
 
     Private Sub FStart_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+#If DEBUG Then
+        Me.Text &= " (DEBUG)"
+#End If
         ' Random quote dan subtitle generator
         Dim random As New Random()
         Dim quoteIndex As Integer = random.Next(quotes.Length)

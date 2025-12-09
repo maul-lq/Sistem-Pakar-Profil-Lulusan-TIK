@@ -5,6 +5,9 @@ Public Class FHasil
     Private hasilList As List(Of HasilProfesi)
 
     Private Sub FHasil_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+#If DEBUG Then
+        Me.Text &= " (DEBUG)"
+#End If
         Try
             ' 1. Hitung hasil akhir
             hasilList = HitungHasilAkhir(sessionId)
@@ -27,12 +30,13 @@ Public Class FHasil
         ' Set user labels (nama, email)
         Dim userData = GetUserDataForSession(sessionId)
         If userData.ContainsKey("nama") Then
-            LabelUsername.Text = userData("nama")
+            LabelUsername.Text = "Nama: " & userData("nama")
         End If
         If userData.ContainsKey("email") Then
-            LabelEmail.Text = userData("email")
+            LabelEmail.Text = "Email: " & userData("email")
         End If
 
+#If DEBUG Then
         ' Top 3 Karir
         If sortedList.Count >= 1 Then
             LabelKarir1st.Text = $"{sortedList(0).NamaProfesi} ({Math.Round(sortedList(0).SkorAkhir, 2)})"
@@ -43,6 +47,19 @@ Public Class FHasil
         If sortedList.Count >= 3 Then
             LabelKarir3Rd.Text = $"{sortedList(2).NamaProfesi} ({Math.Round(sortedList(2).SkorAkhir, 2)})"
         End If
+#Else
+        ' Top 3 Karir
+        If sortedList.Count >= 1 Then
+            LabelKarir1st.Text = $"{sortedList(0).NamaProfesi}"
+        End If
+        If sortedList.Count >= 2 Then
+            LabelKarir2nd.Text = $"{sortedList(1).NamaProfesi}"
+        End If
+        If sortedList.Count >= 3 Then
+            LabelKarir3Rd.Text = $"{sortedList(2).NamaProfesi}"
+        End If
+#End If
+
 
         Dim top3 = sortedList.Take(3).ToList()
 
@@ -164,8 +181,8 @@ Public Class FHasil
         If dr = DialogResult.OK Then
             ' Refresh displayed name/email after successful update
             Dim refreshed = GetUserDataForSession(sessionId)
-            If refreshed.ContainsKey("nama") Then LabelUsername.Text = refreshed("nama")
-            If refreshed.ContainsKey("email") Then LabelEmail.Text = refreshed("email")
+            If refreshed.ContainsKey("nama") Then LabelUsername.Text = $"Nama: {refreshed("nama")}"
+            If refreshed.ContainsKey("email") Then LabelEmail.Text = $"Email: {refreshed("email")}"
         End If
     End Sub
 End Class

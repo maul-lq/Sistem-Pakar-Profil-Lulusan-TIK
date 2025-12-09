@@ -1,3 +1,8 @@
 <Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Publish" />
+    <BuildType Name="Release" />
+  </Configurations>
   <Project Path="Si Pakar/Si Pakar.vbproj" />
 </Solution>

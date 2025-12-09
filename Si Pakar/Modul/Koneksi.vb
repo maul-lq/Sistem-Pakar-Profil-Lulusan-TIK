@@ -2,7 +2,7 @@
 
 Module Koneksi
     Public Function GetConnection()
-#If Release Then
+#If PUBLISH Then
         Dim path = AppDomain.CurrentDomain.BaseDirectory
         Dim dbPAth = "Database\Database Sistem Pakar.mdf"
         Dim fullPath As String = IO.Path.Combine(path, dbPAth)

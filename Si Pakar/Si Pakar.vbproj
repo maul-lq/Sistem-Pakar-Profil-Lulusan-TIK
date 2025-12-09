@@ -10,6 +10,7 @@
     <PackageIcon>Gemini_Generated_Image_zhv3szzhv3szzhv3.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NeutralLanguage>id-ID</NeutralLanguage>
+    <Configurations>Debug;Release;Publish</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

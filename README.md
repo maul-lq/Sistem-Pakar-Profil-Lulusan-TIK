@@ -74,14 +74,12 @@ Sistem secara otomatis memilih 1 dari **5 skenario**:
 |----------|---------|-----------------|
 | **Dominant** | Gap > 20% & Top Score > 40% & Interest matches Top 2 | 20 soal dari rumpun terkuat (4 soal/profesi) |
 | **Hybrid** | Gap ≤ 20% & Top Score > 40% & Interest matches Top 2 | 10 soal juara 1 + 10 soal juara 2 (2 soal/profesi) |
-| **Special Hybrid** | Top Score > 40% & Interest NOT match Top 2 | 10 soal juara 1 + 10 soal minat (2 soal/profesi) |
 | **Beginner** | Top Score < 40% & Ada Minat | 20 soal dari rumpun minat (4 soal/profesi) |
 | **Null** | Top Score < 40% & Tanpa Minat | 20 soal Creative & Product (4 soal/profesi) |
 
 **Catatan Penting**:
 - User hanya bisa memilih **SATU minat** atau **TIDAK MEMILIH** sama sekali
 - Jika user tidak memilih minat, sistem akan pilih skenario Dominant/Hybrid (jika skill > 40%) atau Null (jika skill < 40%)
-- Special Hybrid muncul ketika user punya skill tinggi tapi minatnya berbeda dari top 2 cluster
 
 ### 📊 Skala Likert 5 Poin
 
@@ -140,7 +138,6 @@ Sistem secara otomatis memilih 1 dari **5 skenario**:
 IF jawaban_fase1 THEN tentukan_skenario
 IF skenario = "Dominant" THEN ambil_soal_rumpun_tertinggi
 IF skenario = "Hybrid" THEN ambil_soal_2_rumpun_tertinggi
-IF skenario = "Special Hybrid" THEN ambil_soal_rumpun_tertinggi + rumpun_minat
 IF skenario = "Beginner" THEN ambil_soal_rumpun_minat
 IF skenario = "Null" THEN ambil_soal_creative_product
 ```

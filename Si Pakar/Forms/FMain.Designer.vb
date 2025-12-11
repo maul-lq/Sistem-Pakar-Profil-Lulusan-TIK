@@ -35,6 +35,7 @@ Partial Class FMain
         Label2 = New Label()
         ComboBoxProgramStudi = New ComboBox()
         ErrorProvider1 = New ErrorProvider(components)
+        ButtonBack = New Button()
         GroupBox1.SuspendLayout()
         CType(ErrorProvider1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -58,6 +59,7 @@ Partial Class FMain
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.Controls.Add(ButtonBack)
         GroupBox1.Controls.Add(TextBoxEmail)
         GroupBox1.Controls.Add(Label4)
         GroupBox1.Controls.Add(ButtonLanjut)
@@ -145,6 +147,16 @@ Partial Class FMain
         ' 
         ErrorProvider1.ContainerControl = Me
         ' 
+        ' ButtonBack
+        ' 
+        ButtonBack.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        ButtonBack.Location = New Point(36, 237)
+        ButtonBack.Name = "ButtonBack"
+        ButtonBack.Size = New Size(89, 28)
+        ButtonBack.TabIndex = 10
+        ButtonBack.Text = "Kembali"
+        ButtonBack.UseVisualStyleBackColor = True
+        ' 
         ' FMain
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
@@ -175,4 +187,5 @@ Partial Class FMain
     Friend WithEvents TextBoxEmail As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents ErrorProvider1 As ErrorProvider
+    Friend WithEvents ButtonBack As Button
 End Class

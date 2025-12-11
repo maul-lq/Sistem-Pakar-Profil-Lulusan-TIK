@@ -36,6 +36,9 @@ Module Hasil_Analisis
         ' 2. Hitung Skor DST per Profesi (dari Exam Details + Skor Rumpun)
         Dim skorDST As Dictionary(Of String, Double) = HitungSkorDSTProfesi(sessionId)
 
+        ' 2.1 Ambil list profesi yang diujikan di fase 2
+        Dim profesiDiujikan = GetProfesiDiujikanFase2(sessionId)
+
         ' 3. Ambil semua profesi dan hitung skor akhir
         Dim hasilList As New List(Of HasilProfesi)
 
@@ -59,7 +62,7 @@ Module Hasil_Analisis
                 ' Skor Minat
                 Dim skorMinat As Double = KONSTANTA_BOOST * variabelMinat
 
-                ' Skor Akhir
+                ' Skor Akhir (sebelum normalisasi ulang)
                 Dim skorAkhir As Double = skorDSTVal + skorMinat
 
                 ' Tentukan Zona
@@ -77,7 +80,48 @@ Module Hasil_Analisis
             End While
         End Using
 
+        ' 4. NORMALISASI ULANG: Hanya untuk profesi yang diujikan di fase 2
+        ' Filter profesi yang diujikan
+        Dim profesiYangDiujikan = hasilList.Where(Function(x) profesiDiujikan.Contains(x.KodeProfesi)).ToList()
+
+        If profesiYangDiujikan.Count > 0 Then
+            Dim maxSkorAkhir = profesiYangDiujikan.Max(Function(x) x.SkorAkhir)
+
+            If maxSkorAkhir > 0 Then
+                ' Normalisasi ulang hanya untuk profesi yang diujikan
+                For Each profesi In profesiYangDiujikan
+                    profesi.SkorAkhir = profesi.SkorAkhir / maxSkorAkhir
+                Next
+            End If
+        End If
+
         Return hasilList
+    End Function
+
+    ' ==========================================
+    ' GET PROFESI YANG DIUJIKAN DI FASE 2
+    ' ==========================================
+    Private Function GetProfesiDiujikanFase2(sessionId As Integer) As List(Of String)
+        Dim profesiList As New List(Of String)
+
+        Using conn = GetConnection()
+            conn.Open()
+            Dim q = "SELECT DISTINCT p.[kode profesi] " &
+                   "FROM [Exam Details] ed " &
+                   "JOIN Pertanyaan p ON ed.[id pertanyaan] = p.[Id Pertanyaan] " &
+                   "WHERE ed.[id sesi] = @sid AND p.[phase] = 2 AND p.[kode profesi] IS NOT NULL " &
+                   "ORDER BY p.[kode profesi]"
+
+            Dim cmd As New SqlCommand(q, conn)
+            cmd.Parameters.AddWithValue("@sid", sessionId)
+            Dim reader = cmd.ExecuteReader()
+
+            While reader.Read()
+                profesiList.Add(reader("kode profesi").ToString())
+            End While
+        End Using
+
+        Return profesiList
     End Function
 
     ' ==========================================
@@ -202,9 +246,9 @@ Module Hasil_Analisis
         If skillTinggi And minatTinggi Then
             Return "Golden Match"
         ElseIf skillTinggi And Not minatTinggi Then
-            Return "Reality Check"
+            Return "Hidden Gem"           ' SWAPPED: Skill tinggi + Minat rendah (was Reality Check)
         ElseIf Not skillTinggi And minatTinggi Then
-            Return "Hidden Gem"
+            Return "Reality Check"        ' SWAPPED: Skill rendah + Minat tinggi (was Hidden Gem)
         Else
             Return "Explorer"
         End If

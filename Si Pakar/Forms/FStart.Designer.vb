@@ -45,7 +45,7 @@ Partial Class FStart
         ' 
         ButtonLakukanTes.Anchor = AnchorStyles.None
         ButtonLakukanTes.BackColor = Color.FromArgb(CByte(253), CByte(206), CByte(223))
-        ButtonLakukanTes.Location = New Point(376, 252)
+        ButtonLakukanTes.Location = New Point(376, 321)
         ButtonLakukanTes.Name = "ButtonLakukanTes"
         ButtonLakukanTes.Size = New Size(107, 39)
         ButtonLakukanTes.TabIndex = 2
@@ -57,7 +57,7 @@ Partial Class FStart
         LabelSubtitle.Anchor = AnchorStyles.None
         LabelSubtitle.AutoSize = True
         LabelSubtitle.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        LabelSubtitle.Location = New Point(393, 195)
+        LabelSubtitle.Location = New Point(393, 264)
         LabelSubtitle.Name = "LabelSubtitle"
         LabelSubtitle.Size = New Size(73, 21)
         LabelSubtitle.TabIndex = 1
@@ -68,7 +68,7 @@ Partial Class FStart
         LabelQuote.Anchor = AnchorStyles.None
         LabelQuote.AutoSize = True
         LabelQuote.Font = New Font("Segoe UI", 27.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        LabelQuote.Location = New Point(356, 129)
+        LabelQuote.Location = New Point(356, 105)
         LabelQuote.Name = "LabelQuote"
         LabelQuote.Size = New Size(147, 50)
         LabelQuote.TabIndex = 0

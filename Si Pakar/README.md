@@ -104,23 +104,49 @@ Sistem secara otomatis memilih 1 dari **5 skenario**:
 │     Kondisi     │       Zona       │    Rekomendasi    │
 ├─────────────────┼──────────────────┼───────────────────┤
 │ Skill ⬆ + Minat⬆│ Golden Match     │ ⭐⭐⭐ Jalur Ideal │
-│ Skill ⬆ + Minat⬇│ Reality Check    │ ⚠️ Pertimbangkan   │
-│ Skill ⬇ + Minat⬆│ Hidden Gem       │ 💎 Potensi Besar  │
+│ Skill ⬆ + Minat⬇│ Hidden Gem       │ 💎 Potensi Tersembunyi│
+│ Skill ⬇ + Minat⬆│ Reality Check    │ ⚠️ Butuh Kerja Keras│
 │ Skill ⬇ + Minat⬇│ Explorer         │ 🔍 Perlu Eksplorasi│
 └─────────────────┴──────────────────┴───────────────────┘
 ```
 
 **Threshold**: Skill ≥ 0.5 = Tinggi, Interest = 1.0 (dipilih) atau 0.0 (tidak dipilih)
 
-**Mengapa Top 3 Bisa Masuk Reality Check?**
+**Penjelasan Zona:**
 
-- **Reality Check** = Skill tinggi (≥0.5) TAPI user TIDAK memilih profesi ini sebagai minat
+1. **Golden Match** ⭐⭐⭐ (Skill Tinggi + Minat Tinggi)
+   > "Ini DESTINY-mu! Kamu JAGO dan SUKA bidang ini"
+   - **Rekomendasi**: KEJAR dengan maksimal! Ini jalur karir terbaik untukmu
+   - **Contoh**: Mahasiswa TI yang jago coding (skill 0.85) dan memilih Backend Developer sebagai minat
+
+2. **Hidden Gem** 💎 (Skill Tinggi + Minat Rendah)
+   > "Berlian tersembunyi - kamu BERBAKAT tapi belum SADAR/EKSPLORASI"
+   - **Rekomendasi**: Pertimbangkan untuk dicoba! Kamu punya bakat alami di sini
+   - **Contoh**: Mahasiswa TI yang jago Backend (skill 0.85) tapi minatnya UI Designer - sistem deteksi: "Kamu sebenarnya bagus di Backend, yakin ga mau coba?"
+
+3. **Reality Check** ⚠️ (Skill Rendah + Minat Tinggi)
+   > "Hadapi kenyataan - kamu SANGAT tertarik tapi skill BELUM cukup"
+   - **Rekomendasi**: Kerja keras! Passion sudah ada, sekarang bangun skill-nya
+   - **Contoh**: Mahasiswa TI yang suka UI Design (minat) tapi skill masih 0.35 - butuh belajar intensif untuk achieve dream career
+
+4. **Explorer** 🔍 (Skill Rendah + Minat Rendah)
+   > "Belum nemu passion dan skill-mu di bidang ini"
+   - **Rekomendasi**: Keep exploring! Coba bidang-bidang lain
+   - **Contoh**: Profesi yang tidak dipilih dan hasil tes juga rendah
+
+**Mengapa Top 3 Bisa Masuk Hidden Gem?**
+- **Hidden Gem** = Skill tinggi (≥0.5) TAPI user TIDAK memilih profesi ini sebagai minat
 - **Contoh**: User jago Software Engineering (score 0.85) tapi minatnya UI Designer (Creative)
-- **Rekomendasi**: "Kamu berbakat di sini, yakin ga mau pertimbangkan?"
+- **Rekomendasi Sistem**: "Kamu berbakat di sini, mungkin ini potensi yang overlooked! Worth considering?"
+
+**Kapan Hidden Gem Kosong?**
+1. ✅ Semua profesi dengan skill tinggi JUGA diminati (masuk Golden Match)
+2. ✅ Semua profesi punya skill rendah (<0.5) - tidak ada yang masuk Hidden Gem
+3. ✅ User pilih minat yang TIDAK match dengan skill terbaik mereka (semua skill tinggi diminati)
 
 **Kapan Reality Check Kosong?**
-1. ✅ Semua profesi dengan skill tinggi JUG diminati (masuk Golden Match)
-2. ✅ Semua profesi punya skill rendah (<0.5) - tidak ada yang masuk Reality Check
+1. ✅ User TIDAK memilih minat sama sekali (semua profesi minat = 0.0)
+2. ✅ Semua profesi yang diminati JUGA punya skill tinggi (masuk Golden Match)
 3. ✅ User pilih minat yang match dengan skill terbaik mereka
 
 #### **Linearity Analysis**
@@ -184,6 +210,40 @@ dimana:
 - Skor DST: 0.75
 - User memilih Backend Developer sebagai minat → Variabel Minat = 1.0
 - **Skor Akhir** = 0.75 + (0.3 × 1.0) = **1.05** (dinormalisasi ke 1.0)
+
+### Interest Boosting Algorithm
+
+**Formula**:
+```vb
+Final_Score = DST_Score + (KONSTANTA_BOOST × Interest_Variable)
+
+Where:
+- KONSTANTA_BOOST = 0.3 (30% boost)
+- Interest_Variable = 1.0 if profession matches user interest
+                    = 0.0 if profession does NOT match user interest
+```
+
+**Example**:
+- Profession: Backend Developer
+- DST Score: 0.75
+- User selected "Backend Developer" as interest → Interest_Variable = 1.0
+- **Raw Score** = 0.75 + (0.3 × 1.0) = 1.05
+- **After Re-normalization** = 1.05 / 1.05 = **1.00** (capped to [0-1] range)
+
+**Re-normalization Process**:
+After interest boosting is applied, the system performs a **second normalization** on professions tested in Phase 2:
+```vb
+' Find max score among tested professions
+maxSkorAkhir = max(all final scores for tested professions)
+
+' Re-normalize each profession
+normalized_score = final_score / maxSkorAkhir
+```
+
+This ensures:
+- ✅ All scores remain in [0-1] range (never exceed 100%)
+- ✅ Relative ranking is preserved
+- ✅ Interest boost still provides advantage without breaking the scale
 
 ---
 
@@ -448,7 +508,6 @@ Jika Anda ingin setup database dari awal atau menggunakan SQL Server instance (b
      - Membuat **10 tabel** dengan relasi Foreign Key
      - Insert **110 pertanyaan** (10 fase 1 + 100 fase 2)
      - Insert **25 profesi** (5 per rumpun)
-     - Insert **9 mapping linearitas**
      - Insert data master (Rumpun, Prodi)
 
 4. **Update Connection String di `Koneksi.vb`**:
@@ -621,7 +680,7 @@ Jika semua langkah di atas berhasil, instalasi Anda **SUKSES**! 🎉
 
 **2. Gunakan Environment Variable:**
 ```vb
-' Alternative: Gunakan variable dari system
+' Alternative: Gununakan variable dari system
 Dim dbPath = Environment.GetEnvironmentVariable("SI_PAKAR_DB_PATH")
 If String.IsNullOrEmpty(dbPath) Then
     dbPath = "C:\Default\Path\Database Sistem Pakar.mdf"
@@ -636,3 +695,146 @@ End If
        connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database Sistem Pakar.mdf;Integrated Security=True" 
        providerName="System.Data.SqlClient" />
 </connectionStrings>
+```
+
+---
+
+## 🚀 Contoh Penggunaan
+
+Setelah user mengisi data diri dan menjalani tes, sistem akan memberikan rekomendasi karir. Berikut adalah contoh hasil analisis dan rekomendasi dari sistem:
+
+### **Test 1: Skenario Dominant**
+```
+Input:
+- Nama: Ahli Backend
+- Email: ahli.backend@example.com
+- Prodi: TI
+- Minat: Backend Developer (SE cluster)
+- Fase 1: SE (8/10) = 80%, DI (2/10) = 20%
+- Gap: 60% > 20% ✓
+- Interest matches Top 2 (SE, DI) ✗
+
+Expected:
+- Skenario: Dominant
+- Fase 2: 20 soal SE (4 soal × 5 profesi)
+- Top Result: Backend Developer, Frontend Developer
+
+Zona Karir:
+- Backend Developer: Skill 0.85, Minat 1.0 → Golden Match ⭐⭐⭐
+- Frontend Developer: Skill 0.78, Minat 0.0 → Hidden Gem 💎
+
+Skor Akhir:
+- Backend Developer: 0.85 + 0.3 = 1.15 (dinormalisasi ke 1.0)
+- Frontend Developer: 0.78 + 0.0 = 0.78
+
+Interpretasi:
+- Golden Match: "Ini DESTINY-mu! Kamu JAGO dan SUKA bidang ini"
+- Hidden Gem: "Kamu punya bakat terpendam di Frontend, coba eksplor lebih dalam!"
+```
+
+---
+
+### **Test 2: Skenario Special Hybrid**
+```
+Input:
+- Nama: Budi Santoso
+- Email: budi@example.com
+- Prodi: TI
+- Minat: UI Designer (CP cluster)
+- Fase 1: SE (7/10) = 70%, DI (6/10) = 60%, CP (2/10) = 20%
+- Gap: 10% < 20% ✓
+- Interest does NOT match Top 2 (SE, DI) ✓
+
+Expected:
+- Skenario: Special Hybrid
+- Fase 2: 10 soal SE + 10 soal CP (2 soal × 5 profesi)
+- Top Result: Mix of Software & Creative
+
+Zone Classification (AFTER SWAP):
+- Backend Developer: Skill 0.85, Minat 0.0 → Hidden Gem 💎 (NEW!)
+- Frontend Developer: Skill 0.78, Minat 0.0 → Hidden Gem 💎 (NEW!)
+- UI Designer: Skill 0.35, Minat 1.0 → Reality Check ⚠️ (NEW!)
+
+Skor Akhir:
+- Backend Developer: 0.85 + 0.0 = 0.85
+- Frontend Developer: 0.78 + 0.0 = 0.78
+- UI Designer: 0.35 + 0.3 = 0.65 (interest boost)
+
+Interpretasi:
+- Hidden Gem: "Kamu jago Backend/Frontend tapi belum tertarik - potensi tersembunyi!"
+- Reality Check: "Kamu suka UI Design tapi skill masih kurang - kerja keras untuk achieve it!"
+
+```
+
+---
+
+### 🚧 Dalam Pengembangan
+
+| Fitur | Status | Target |
+|-------|--------|--------|
+| **Export PDF** | 🚧 Planned | Print/export hasil ke PDF |
+
+---
+
+## ⚠️ Known Issues & Fixes
+
+### **Issue #1: Tanda "?" pada Analisis Linearitas** ✅ FIXED
+
+**Problem**: 
+- Info linearitas menampilkan "❓ Status tidak diketahui" untuk kombinasi tertentu
+- Terjadi saat Top 3 hasil dari rumpun DI atau IN
+
+**Root Cause**:
+- Tabel `Linearity Matrix` hanya berisi **9 dari 15 kombinasi** yang seharusnya
+- Missing records: TI→DI, TI→IN, TMJ→DI, TMJ→IN, TMD→DI, TMD→IN
+
+**Solution**:
+Jalankan script perbaikan database:
+```sql
+-- File: Si Pakar/Database/Fix_Linearity_Matrix.sql
+-- Menambahkan 6 record yang hilang
+
+-- Atau jalankan langsung:
+USE [Database Sistem Pakar]
+
+SET IDENTITY_INSERT [dbo].[Linearity Matrix] ON;
+
+INSERT INTO [dbo].[Linearity Matrix] ([matrix id], [kode prodi], [kode rumpun], [status linearitas]) VALUES
+(4, 'TI', 'DI', 'Linear'),
+(5, 'TI', 'IN', 'Related'),
+(6, 'TMJ', 'DI', 'Pivot'),
+(7, 'TMJ', 'IN', 'Linear'),
+(8, 'TMD', 'DI', 'Pivot'),
+(9, 'TMD', 'IN', 'Pivot');
+
+SET IDENTITY_INSERT [dbo].[Linearity Matrix] OFF;
+```
+
+**Verification**:
+```sql
+-- Check total records (should be 15)
+SELECT COUNT(*) FROM [Linearity Matrix]
+
+-- Display complete matrix
+SELECT * FROM [Linearity Matrix] 
+ORDER BY [kode prodi], [kode rumpun]
+```
+
+**Complete Matrix After Fix**:
+| Prodi | Rumpun | Status | Keterangan |
+|-------|--------|--------|------------|
+| TI | SE | Linear | ✅ Sejalan dengan jurusan |
+| TI | DI | Linear | ✅ Sejalan dengan jurusan |
+| TI | IN | Related | ⚠️ Masih terkait |
+| TI | CS | Linear | ✅ Sejalan dengan jurusan |
+| TI | CP | Related | ⚠️ Masih terkait |
+| TMJ | SE | Related | ⚠️ Masih terkait |
+| TMJ | DI | Pivot | 🔄 Perlu upskilling |
+| TMJ | IN | Linear | ✅ Sejalan dengan jurusan |
+| TMJ | CS | Linear | ✅ Sejalan dengan jurusan |
+| TMJ | CP | Pivot | 🔄 Perlu upskilling |
+| TMD | SE | Related | ⚠️ Masih terkait |
+| TMD | DI | Pivot | 🔄 Perlu upskilling |
+| TMD | IN | Pivot | 🔄 Perlu upskilling |
+| TMD | CS | Pivot | 🔄 Perlu upskilling |
+| TMD | CP | Linear | ✅ Sejalan dengan jurusan |

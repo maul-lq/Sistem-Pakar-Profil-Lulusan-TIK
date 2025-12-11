@@ -57,7 +57,7 @@
         LabelSubtitle.AutoSize = True
 
         Dim centerX As Integer = Convert.ToInt32((Panel1.Size.Width - LabelQuote.Width) \ 2)
-        Dim centerY As Integer = Convert.ToInt32((Panel1.Size.Height - LabelQuote.Height) \ 2) - 88
+        Dim centerY As Integer = Convert.ToInt32((Panel1.Size.Height - LabelQuote.Height) \ 2) - 68
 
         ' Jangan beri nilai negatif jika label lebih besar dari panel
         centerX = Math.Max(0, centerX)
@@ -66,7 +66,7 @@
         LabelQuote.Location = New Point(centerX, centerY)
 
         centerX = Convert.ToInt32((Panel1.Size.Width - LabelSubtitle.Width) \ 2)
-        centerY = Convert.ToInt32((Panel1.Size.Height - LabelSubtitle.Height) \ 2)
+        centerY = Convert.ToInt32((Panel1.Size.Height - LabelSubtitle.Height) \ 2) + 88
 
         ' Jangan beri nilai negatif jika label lebih besar dari panel
         centerX = Math.Max(0, centerX)

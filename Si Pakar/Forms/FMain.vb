@@ -51,21 +51,21 @@
         End If
 
         Dim pattern As String = "^[^@\s]+@[^@\s]+\.[^@\s]+$"
-            If Not System.Text.RegularExpressions.Regex.IsMatch(email, pattern) Then
+        If Not System.Text.RegularExpressions.Regex.IsMatch(email, pattern) Then
             ErrorProviderMain.SetError(TextBoxEmail, "Email tidak valid (format: user@domain.tld)")
 #If RELEASE Or PUBLISH Then
             isValid = False
 #End If
         End If
 
-            If ComboBoxProgramStudi.SelectedItem Is Nothing OrElse String.IsNullOrEmpty(ComboBoxProgramStudi.SelectedItem.ToString().Trim()) Then
-                ErrorProviderMain.SetError(ComboBoxProgramStudi, "Pilih program studi")
+        If ComboBoxProgramStudi.SelectedItem Is Nothing OrElse String.IsNullOrEmpty(ComboBoxProgramStudi.SelectedItem.ToString().Trim()) Then
+            ErrorProviderMain.SetError(ComboBoxProgramStudi, "Pilih program studi")
 #If RELEASE Or PUBLISH Then
                 isValid = False
 #End If
         End If
 
-            ButtonLanjut.Enabled = isValid
+        ButtonLanjut.Enabled = isValid
         Return isValid
     End Function
 
@@ -101,5 +101,10 @@
 
     Private Sub FMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Application.Exit()
+    End Sub
+
+    Private Sub ButtonBack_Click(sender As Object, e As EventArgs) Handles ButtonBack.Click
+        Me.Hide()
+        FStart.Show()
     End Sub
 End Class

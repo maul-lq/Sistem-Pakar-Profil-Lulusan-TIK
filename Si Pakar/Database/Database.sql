@@ -159,6 +159,75 @@ INSERT INTO [dbo].[Profesi] ([kode profesi], [kode rumpun], [nama profesi], [des
 ('QAE', 'SE', 'QA Engineer', 'Deskripsi untuk QA Engineer'),
 ('SCA', 'CS', 'Security Analyst', 'Deskripsi untuk Security Analyst'),
 ('SDO', 'CS', 'SecDevOps Engineer', 'Deskripsi untuk SecDevOps Engineer'),
+('SYA', 'IN', 'System Administrator', 'Deskripsi untuk System Administrator',
+    -- 9. Tabel: Exam Details (Depends on Sesi Ujian, Pertanyaan)
+CREATE TABLE [dbo].[Exam Details] (
+    [detail id]       INT            IDENTITY (1, 1) NOT NULL,
+    [id sesi]         INT            NOT NULL,
+    [id pertanyaan]   NVARCHAR (10)  NOT NULL,
+    [user confidence] FLOAT (53)     NOT NULL,
+    CONSTRAINT [PK__Exam Det__4FBDAC515000CE94] PRIMARY KEY CLUSTERED ([detail id] ASC),
+    CONSTRAINT [FK_Exam Details_Pertanyaan] FOREIGN KEY ([id pertanyaan]) REFERENCES [dbo].[Pertanyaan] ([Id Pertanyaan]),
+    CONSTRAINT [FK_Exam Details_Sesi Ujan] FOREIGN KEY ([id sesi]) REFERENCES [dbo].[Sesi Ujian] ([Id sesi])
+);
+
+-- 10. Tabel: Exam Rumpun Scores (Depends on Sesi Ujian, Rumpun)
+CREATE TABLE [dbo].[Exam Rumpun Scores] (
+    [score id]    INT           IDENTITY (1, 1) NOT NULL,
+    [id sesi]     INT           NULL,
+    [kode rumpun] NVARCHAR (10) NULL,
+    [score value] FLOAT (53)    NULL,
+    CONSTRAINT [PK__Exam Rum__9D8B673DEFE364DC] PRIMARY KEY CLUSTERED ([score id] ASC),
+    CONSTRAINT [FK_Exam Rumpun Scores_Rumpun] FOREIGN KEY ([kode rumpun]) REFERENCES [dbo].[Rumpun] ([kode rumpun]),
+    CONSTRAINT [FK_Exam Rumpun Scores_Sesi] FOREIGN KEY ([id sesi]) REFERENCES [dbo].[Sesi Ujian] ([Id sesi])
+);
+
+GO
+
+/* =============================================================
+   BAGIAN 2: INSERT DATA (DML)
+   Data diambil dari file CSV yang diupload
+=============================================================
+*/
+
+-- A. Insert Rumpun
+INSERT INTO [dbo].[Rumpun] ([kode rumpun], [nama rumpun]) VALUES
+('CP', 'Creative & Product'),
+('CS', 'Cyber Security'),
+('DI', 'Data & Intellegence'),
+('IN', 'Infrastructure'),
+('SE', 'Software Engineering');
+
+-- B. Insert Prodi
+INSERT INTO [dbo].[Prodi] ([kode prodi], [nama prodi]) VALUES
+('TI', 'Teknik Informatika'),
+('TMD', 'Teknik Mutlimedia Digital'),
+('TMJ', 'Teknik Multimedia Jaringan');
+
+-- C. Insert Profesi
+INSERT INTO [dbo].[Profesi] ([kode profesi], [kode rumpun], [nama profesi], [deskripsi]) VALUES
+('AIE', 'DI', 'AI Engineer', 'Deskripsi untuk AI Engineer'),
+('BED', 'SE', 'Backend Developer', 'Deskripsi untuk Backend Developer'),
+('BIA', 'DI', 'BI Analyst', 'Deskripsi untuk BI Analyst'),
+('DAN', 'DI', 'Data Analyst', 'Deskripsi untuk Data Analyst'),
+('DEN', 'DI', 'Data Engineer', 'Deskripsi untuk Data Engineer'),
+('DGF', 'CS', 'Digital Forensics', 'Deskripsi untuk Digital Forensics'),
+('DOE', 'IN', 'DevOps Engineer', 'Deskripsi untuk DevOps Engineer'),
+('DSC', 'DI', 'Data Scientist', 'Deskripsi untuk Data Scientist'),
+('FED', 'SE', 'Frontend Developer', 'Deskripsi untuk Frontend Developer'),
+('GMP', 'SE', 'Game Programmer', 'Deskripsi untuk Game Programmer'),
+('GRC', 'CS', 'GRC Specialist', 'Deskripsi untuk GRC Specialist'),
+('GRD', 'CP', 'Graphic Designer', 'Deskripsi untuk Graphic Designer'),
+('IOE', 'IN', 'IoT Engineer', 'Deskripsi untuk IoT Engineer'),
+('ITS', 'IN', 'IT Support Specialist', 'Deskripsi untuk IT Support Specialist'),
+('MBD', 'SE', 'Mobile Developer', 'Deskripsi untuk Mobile Developer'),
+('MMS', 'CP', 'Multimedia Specialist', 'Deskripsi untuk Multimedia Specialist'),
+('NTE', 'IN', 'Network Engineer', 'Deskripsi untuk Network Engineer'),
+('PMA', 'CP', 'Product Manager', 'Deskripsi untuk Product Manager'),
+('PNT', 'CS', 'Pentester', 'Deskripsi untuk Pentester'),
+('QAE', 'SE', 'QA Engineer', 'Deskripsi untuk QA Engineer'),
+('SCA', 'CS', 'Security Analyst', 'Deskripsi untuk Security Analyst'),
+('SDO', 'CS', 'SecDevOps Engineer', 'Deskripsi untuk SecDevOps Engineer'),
 ('SYA', 'IN', 'System Administrator', 'Deskripsi untuk System Administrator'),
 ('UID', 'CP', 'UI Designer', 'Deskripsi untuk UI Designer'),
 ('UXR', 'CP', 'UX Researcher', 'Deskripsi untuk UX Researcher');
@@ -168,14 +237,25 @@ INSERT INTO [dbo].[Profesi] ([kode profesi], [kode rumpun], [nama profesi], [des
 SET IDENTITY_INSERT [dbo].[Linearity Matrix] ON;
 
 INSERT INTO [dbo].[Linearity Matrix] ([matrix id], [kode prodi], [kode rumpun], [status linearitas]) VALUES
+-- TI (Teknik Informatika) - Linear: SE, DI, CS | Related: IN, CP
 (1, 'TI', 'SE', 'Linear'),
-(2, 'TMJ', 'SE', 'Related'),
-(3, 'TMD', 'SE', 'Related'),
+(4, 'TI', 'DI', 'Linear'),
+(5, 'TI', 'IN', 'Related'),
 (10, 'TI', 'CS', 'Linear'),
-(11, 'TMJ', 'CS', 'Linear'),
-(12, 'TMD', 'CS', 'Pivot'),
 (13, 'TI', 'CP', 'Related'),
+
+-- TMJ (Teknik Multimedia Jaringan) - Linear: IN, CS | Related: SE | Pivot: DI, CP
+(2, 'TMJ', 'SE', 'Related'),
+(6, 'TMJ', 'DI', 'Pivot'),
+(7, 'TMJ', 'IN', 'Linear'),
+(11, 'TMJ', 'CS', 'Linear'),
 (14, 'TMJ', 'CP', 'Pivot'),
+
+-- TMD (Teknik Multimedia Digital) - Linear: CP | Related: SE | Pivot: DI, IN, CS
+(3, 'TMD', 'SE', 'Related'),
+(8, 'TMD', 'DI', 'Pivot'),
+(9, 'TMD', 'IN', 'Pivot'),
+(12, 'TMD', 'CS', 'Pivot'),
 (15, 'TMD', 'CP', 'Linear');
 
 SET IDENTITY_INSERT [dbo].[Linearity Matrix] OFF;

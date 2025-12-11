@@ -358,7 +358,8 @@ Public Class FPertanyaan
         For d As Integer = 1 To maksSoal
             Dim btn As New Button()
             btn.Text = d.ToString()
-            btn.Size = New Size(35, 35)
+            btn.Size = New Size(40, 40)
+            btn.Font = New Font("Segoe UI", 9, FontStyle.Regular)
             AddHandler btn.Click, Sub(s, ev) UbahSoal(CInt(btn.Text))
             FlowLayoutPanelNomorSoal.Controls.Add(btn)
         Next
@@ -391,7 +392,7 @@ Public Class FPertanyaan
     Private Sub AturPosisiLabel()
         LabelSoal.AutoSize = True
         Dim centerX As Integer = Convert.ToInt32((PanelPertanyaann.Size.Width - LabelSoal.Width) \ 2)
-        Dim centerY As Integer = Convert.ToInt32((PanelPertanyaann.Size.Height - LabelSoal.Height) \ 2) - 20
+        Dim centerY As Integer = Convert.ToInt32((PanelPertanyaann.Size.Height - LabelSoal.Height) \ 2) - 50
         LabelSoal.Location = New Point(Math.Max(0, centerX), Math.Max(0, centerY))
     End Sub
 
@@ -502,5 +503,13 @@ Public Class FPertanyaan
     Private Sub FPertanyaan_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         hapusHasilTesIni(sessionId, True)
         Application.Exit()
+    End Sub
+
+    Private Sub LabelSoal_TextChanged(sender As Label, e As EventArgs) Handles LabelSoal.TextChanged
+        ' Buat teksnya warp kalau terlalu panjang
+        sender.AutoSize = False
+        sender.MaximumSize = New Size(PanelPertanyaann.Width - 20, 0)
+        sender.Size = sender.PreferredSize
+        AturPosisiLabel()
     End Sub
 End Class

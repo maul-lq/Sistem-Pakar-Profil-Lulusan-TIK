@@ -48,9 +48,9 @@ Partial Class FHasil
         TableLayoutPanelGoldenMatch = New TableLayoutPanel()
         Label5 = New Label()
         TableLayoutPanelHiddenGem = New TableLayoutPanel()
+        TableLayoutPanelRealityCheck = New TableLayoutPanel()
         TableLayoutPanelExplorer = New TableLayoutPanel()
         TableLayoutPanel7 = New TableLayoutPanel()
-        TableLayoutPanelRealityCheck = New TableLayoutPanel()
         TableLayoutPanel3 = New TableLayoutPanel()
         TableLayoutPanel1 = New TableLayoutPanel()
         ButtonGantiDataUser = New Button()
@@ -70,9 +70,9 @@ Partial Class FHasil
         FlowLayoutPanelZona.SuspendLayout()
         TableLayoutPanelGoldenMatch.SuspendLayout()
         TableLayoutPanelHiddenGem.SuspendLayout()
+        TableLayoutPanelRealityCheck.SuspendLayout()
         TableLayoutPanelExplorer.SuspendLayout()
         TableLayoutPanel7.SuspendLayout()
-        TableLayoutPanelRealityCheck.SuspendLayout()
         TableLayoutPanel3.SuspendLayout()
         TableLayoutPanel1.SuspendLayout()
         SuspendLayout()
@@ -375,6 +375,26 @@ Partial Class FHasil
         TableLayoutPanelHiddenGem.Size = New Size(86, 128)
         TableLayoutPanelHiddenGem.TabIndex = 32
         ' 
+        ' TableLayoutPanelRealityCheck
+        ' 
+        TableLayoutPanelRealityCheck.Anchor = AnchorStyles.None
+        TableLayoutPanelRealityCheck.AutoSize = True
+        TableLayoutPanelRealityCheck.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanelRealityCheck.ColumnCount = 1
+        TableLayoutPanelRealityCheck.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanelRealityCheck.Controls.Add(Label7, 0, 1)
+        TableLayoutPanelRealityCheck.Controls.Add(PictureBox2, 0, 0)
+        TableLayoutPanelRealityCheck.Controls.Add(LabelRealityCheck, 0, 2)
+        TableLayoutPanelRealityCheck.Location = New Point(348, 8)
+        TableLayoutPanelRealityCheck.Margin = New Padding(3, 3, 80, 3)
+        TableLayoutPanelRealityCheck.Name = "TableLayoutPanelRealityCheck"
+        TableLayoutPanelRealityCheck.RowCount = 3
+        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle())
+        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle())
+        TableLayoutPanelRealityCheck.Size = New Size(86, 128)
+        TableLayoutPanelRealityCheck.TabIndex = 30
+        ' 
         ' TableLayoutPanelExplorer
         ' 
         TableLayoutPanelExplorer.Anchor = AnchorStyles.None
@@ -410,26 +430,6 @@ Partial Class FHasil
         TableLayoutPanel7.RowStyles.Add(New RowStyle())
         TableLayoutPanel7.Size = New Size(89, 101)
         TableLayoutPanel7.TabIndex = 30
-        ' 
-        ' TableLayoutPanelRealityCheck
-        ' 
-        TableLayoutPanelRealityCheck.Anchor = AnchorStyles.None
-        TableLayoutPanelRealityCheck.AutoSize = True
-        TableLayoutPanelRealityCheck.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanelRealityCheck.ColumnCount = 1
-        TableLayoutPanelRealityCheck.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanelRealityCheck.Controls.Add(Label7, 0, 1)
-        TableLayoutPanelRealityCheck.Controls.Add(PictureBox2, 0, 0)
-        TableLayoutPanelRealityCheck.Controls.Add(LabelRealityCheck, 0, 2)
-        TableLayoutPanelRealityCheck.Location = New Point(348, 8)
-        TableLayoutPanelRealityCheck.Margin = New Padding(3, 3, 80, 3)
-        TableLayoutPanelRealityCheck.Name = "TableLayoutPanelRealityCheck"
-        TableLayoutPanelRealityCheck.RowCount = 3
-        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle())
-        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle())
-        TableLayoutPanelRealityCheck.Size = New Size(86, 128)
-        TableLayoutPanelRealityCheck.TabIndex = 30
         ' 
         ' TableLayoutPanel3
         ' 
@@ -547,12 +547,12 @@ Partial Class FHasil
         TableLayoutPanelGoldenMatch.PerformLayout()
         TableLayoutPanelHiddenGem.ResumeLayout(False)
         TableLayoutPanelHiddenGem.PerformLayout()
+        TableLayoutPanelRealityCheck.ResumeLayout(False)
+        TableLayoutPanelRealityCheck.PerformLayout()
         TableLayoutPanelExplorer.ResumeLayout(False)
         TableLayoutPanelExplorer.PerformLayout()
         TableLayoutPanel7.ResumeLayout(False)
         TableLayoutPanel7.PerformLayout()
-        TableLayoutPanelRealityCheck.ResumeLayout(False)
-        TableLayoutPanelRealityCheck.PerformLayout()
         TableLayoutPanel3.ResumeLayout(False)
         TableLayoutPanel3.PerformLayout()
         TableLayoutPanel1.ResumeLayout(False)

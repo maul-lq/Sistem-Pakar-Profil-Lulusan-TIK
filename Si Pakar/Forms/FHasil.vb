@@ -33,12 +33,15 @@ Public Class FHasil
 
     ' Print state management
     Private currentPage As Integer = 0
-    Private totalPages As Integer = 4 ' Tambah 1 halaman untuk split content
+    Private totalPages As Integer = 2 ' Tambah 1 halaman untuk split content
+
+    'Custom
+    Dim p1y As Integer 'Buat variabel y posisi halaman 1 untuk digunakan di halaman 2
 
     Private Sub FHasil_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 #If DEBUG Then
         Me.Text &= " (DEBUG)"
-
+        sessionId = 41
 #Const hideBadge = False
 #If hideBadge Then
         TableLayoutPanelRealityCheck.Hide()
@@ -222,9 +225,6 @@ Public Class FHasil
 
     Private Sub ButtonPrint_Click(sender As Object, e As EventArgs) Handles ButtonPrint.Click
         Try
-            ' Set document untuk print
-            DokumenHasilTes.DocumentName = $"Laporan_Hasil_{DateTime.Now:yyyyMMdd_HHmmss}"
-
             ' Setup print dialog dengan preview
             PrintPreviewDialogTesDoc.Document = DokumenHasilTes
 
@@ -241,7 +241,9 @@ Public Class FHasil
     End Sub
 
     Private Sub ButtonKembaliKeAwal_Click(sender As Object, e As EventArgs) Handles ButtonKembaliKeAwal.Click
-        hapusHasilTesIni(sessionId, CheckBoxDonSev.Checked)
+        If CheckBoxDonSev.Checked Then
+            hapusHasilTesIni(sessionId, True)
+        End If
         FStart.Show()
         Hide()
     End Sub
@@ -276,13 +278,14 @@ Public Class FHasil
 
             Select Case currentPage
                 Case 1
-                    PrintPage1_HasilDeteksi(e)
-                Case 2
+                    PrintPage1_HasilDeteksi(e, p1y)
                     PrintPage2_Fase1(e)
-                Case 3
+                Case 2
                     PrintPage3_Fase2Part1(e)
-                Case 4
-                    PrintPage4_Fase2Part2(e)
+                    'Case 3
+                    'PrintPage4_Fase2Part2(e)
+                    'Case 4
+                    '    PrintPage4_Fase2Part2(e)
             End Select
 
             ' Ada halaman berikutnya?
@@ -298,7 +301,7 @@ Public Class FHasil
     ' ==========================================
     ' HALAMAN 1: HASIL DETEKSI (FIXED CHART DISPOSAL)
     ' ==========================================
-    Private Sub PrintPage1_HasilDeteksi(e As PrintPageEventArgs)
+    Private Sub PrintPage1_HasilDeteksi(e As PrintPageEventArgs, ByRef p1y As Integer)
         Dim g As Graphics = e.Graphics
         Dim pageWidth As Integer = e.PageBounds.Width
         Dim pageHeight As Integer = e.PageBounds.Height
@@ -354,7 +357,7 @@ Public Class FHasil
             Dim deskripsi = GetDeskripsiProfesi(profesi.KodeProfesi)
 
             ' Medal icon
-            Dim medal = If(i = 0, "🥇", If(i = 1, "🥈", "🥉"))
+            Dim medal = If(i = 0, "✨", If(i = 1, "✨", "✨"))
             g.DrawString($"{medal} #{i + 1}. {profesi.NamaProfesi}",
                         New Font("Arial", 9, FontStyle.Bold), Brushes.Black, col2X, yCol2)
             yCol2 += 18
@@ -377,6 +380,8 @@ Public Class FHasil
 
         ' Footer
         DrawFooter(g, pageWidth, e.PageBounds.Height, 1, totalPages)
+
+        p1y = yCol1 + 190 ' Simpan posisi y untuk halaman berikutnya
     End Sub
 
     ' ==========================================
@@ -386,10 +391,10 @@ Public Class FHasil
         Dim g As Graphics = e.Graphics
         Dim pageWidth As Integer = e.PageBounds.Width
         Dim pageHeight As Integer = e.PageBounds.Height
-        Dim y As Integer = MARGIN_TOP
+        Dim y As Integer = MARGIN_TOP + p1y
 
-        DrawHeader(g, pageWidth, y, "RESPON PENGGUNA - FASE 1")
-        y += 120
+        'DrawHeader(g, pageWidth, y, "RESPON PENGGUNA - FASE 1")
+        'y += 120
 
         ' SPLIT VERTICAL: Kolom 1 = Chart, Kolom 2 = Tabel (5 pertanyaan pertama)
         Dim colWidth = (pageWidth - MARGIN_LEFT - MARGIN_RIGHT - 30) \ 2
@@ -414,23 +419,23 @@ Public Class FHasil
             If chartFase1 IsNot Nothing Then chartFase1.Dispose()
         End Try
 
-        ' KOLOM 2: Tabel Pertanyaan (5 pertama) - MULAI DARI 1
-        g.DrawString("Pertanyaan (1-5)", FONT_SUBTITLE, New SolidBrush(COLOR_PRIMARY), col2X, y)
+        ' KOLOM 2: Tabel Pertanyaan - MULAI DARI 1
+        g.DrawString("Pertanyaan Fase 1 (1-10)", FONT_SUBTITLE, New SolidBrush(COLOR_PRIMARY), col2X, y)
         Dim yCol2 = y + 30
 
         Dim pertanyaanFase1 = GetPertanyaanDenganJawaban(sessionId, 1)
-        Dim pertanyaan5Pertama = pertanyaanFase1.Take(5).ToList()
-        yCol2 = DrawTabelPertanyaanCompact(g, col2X, colWidth - 20, yCol2, pertanyaan5Pertama, 5, 1)
+        Dim pertanyaan5Pertama = pertanyaanFase1.Take(10).ToList()
+        yCol2 = DrawTabelPertanyaanCompact(g, col2X, colWidth - 20, yCol2, pertanyaan5Pertama, 10, 1)
 
         ' Bawah: 5 pertanyaan terakhir (full width) - LANJUT DARI 6
-        y = Math.Max(yCol1 + 260, yCol2) + 20
-        g.DrawString("Pertanyaan (6-10)", FONT_SUBTITLE, New SolidBrush(COLOR_PRIMARY), MARGIN_LEFT, y)
-        y += 30
+        'y = Math.Max(yCol1 + 260, yCol2) + 20
+        'g.DrawString("Pertanyaan (6-10)", FONT_SUBTITLE, New SolidBrush(COLOR_PRIMARY), MARGIN_LEFT, y)
+        'y += 30
 
-        Dim pertanyaan5Terakhir = pertanyaanFase1.Skip(5).Take(5).ToList()
-        y = DrawTabelPertanyaanCompact(g, MARGIN_LEFT, pageWidth - MARGIN_LEFT - MARGIN_RIGHT, y, pertanyaan5Terakhir, 5, 6)
+        'Dim pertanyaan5Terakhir = pertanyaanFase1.Skip(5).Take(5).ToList()
+        'y = DrawTabelPertanyaanCompact(g, MARGIN_LEFT, pageWidth - MARGIN_LEFT - MARGIN_RIGHT, y, pertanyaan5Terakhir, 3, 7)
 
-        DrawFooter(g, pageWidth, e.PageBounds.Height, 2, totalPages)
+        'DrawFooter(g, pageWidth, e.PageBounds.Height, 2, totalPages)
     End Sub
 
     ' ==========================================
@@ -441,7 +446,7 @@ Public Class FHasil
         Dim pageWidth As Integer = e.PageBounds.Width
         Dim y As Integer = MARGIN_TOP
 
-        DrawHeader(g, pageWidth, y, "RESPON PENGGUNA - FASE 2 (Part 1)")
+        DrawHeader(g, pageWidth, y, "RESPON PENGGUNA - FASE 2")
         y += 120
 
         ' Bar Chart dengan fix: hanya profesi yang diujikan (FIXED: Proper disposal)
@@ -463,10 +468,10 @@ Public Class FHasil
             If chartFase2 IsNot Nothing Then chartFase2.Dispose()
         End Try
 
-        y += 370
+        y += 350
 
         ' Tabel 10 pertanyaan pertama (split 2 kolom)
-        g.DrawString("Pertanyaan Fase 2 (1-10)", FONT_SUBTITLE, New SolidBrush(COLOR_PRIMARY), MARGIN_LEFT, y)
+        g.DrawString("Pertanyaan Fase 2 (1-20)", FONT_SUBTITLE, New SolidBrush(COLOR_PRIMARY), MARGIN_LEFT, y)
         y += 30
 
         Dim colWidth = (pageWidth - MARGIN_LEFT - MARGIN_RIGHT - 30) \ 2
@@ -474,46 +479,15 @@ Public Class FHasil
         Dim col2X = MARGIN_LEFT + colWidth + 30
 
         Dim pertanyaanFase2 = GetPertanyaanDenganJawaban(sessionId, 2)
-        Dim pertanyaan5A = pertanyaanFase2.Take(5).ToList()
-        Dim pertanyaan5B = pertanyaanFase2.Skip(5).Take(5).ToList()
+        Dim pertanyaan5A = pertanyaanFase2.Take(10).ToList()
+        Dim pertanyaan5B = pertanyaanFase2.Skip(10).Take(10).ToList()
 
         ' KOLOM KIRI: Nomor 1-5
-        DrawTabelPertanyaanCompact(g, col1X, colWidth - 10, y, pertanyaan5A, 5, 1)
+        DrawTabelPertanyaanCompact(g, col1X, colWidth - 10, y, pertanyaan5A, 10, 1)
         ' KOLOM KANAN: Nomor 6-10
-        DrawTabelPertanyaanCompact(g, col2X, colWidth - 10, y, pertanyaan5B, 5, 6)
+        DrawTabelPertanyaanCompact(g, col2X, colWidth - 10, y, pertanyaan5B, 10, 11)
 
-        DrawFooter(g, pageWidth, e.PageBounds.Height, 3, totalPages)
-    End Sub
-
-    ' ==========================================
-    ' HALAMAN 4: FASE 2 PART 2 (FIXED)
-    ' ==========================================
-    Private Sub PrintPage4_Fase2Part2(e As PrintPageEventArgs)
-        Dim g As Graphics = e.Graphics
-        Dim pageWidth As Integer = e.PageBounds.Width
-        Dim y As Integer = MARGIN_TOP
-
-        DrawHeader(g, pageWidth, y, "RESPON PENGGUNA - FASE 2 (Part 2)")
-        y += 120
-
-        g.DrawString("Pertanyaan Fase 2 (11-20)", FONT_SUBTITLE, New SolidBrush(COLOR_PRIMARY), MARGIN_LEFT, y)
-        y += 30
-
-        ' Split 2 kolom
-        Dim colWidth = (pageWidth - MARGIN_LEFT - MARGIN_RIGHT - 30) \ 2
-        Dim col1X = MARGIN_LEFT
-        Dim col2X = MARGIN_LEFT + colWidth + 30
-
-        Dim pertanyaanFase2 = GetPertanyaanDenganJawaban(sessionId, 2)
-        Dim pertanyaan5A = pertanyaanFase2.Skip(10).Take(5).ToList()
-        Dim pertanyaan5B = pertanyaanFase2.Skip(15).Take(5).ToList()
-
-        ' KOLOM KIRI: Nomor 11-15
-        DrawTabelPertanyaanCompact(g, col1X, colWidth - 10, y, pertanyaan5A, 5, 11)
-        ' KOLOM KANAN: Nomor 16-20
-        DrawTabelPertanyaanCompact(g, col2X, colWidth - 10, y, pertanyaan5B, 5, 16)
-
-        DrawFooter(g, pageWidth, e.PageBounds.Height, 4, totalPages)
+        DrawFooter(g, pageWidth, e.PageBounds.Height, 2, totalPages)
     End Sub
 
     ' ==========================================

@@ -51,7 +51,7 @@ Partial Class FPertanyaan
         GroupBoxTopik.Dock = DockStyle.Fill
         GroupBoxTopik.Location = New Point(0, 0)
         GroupBoxTopik.Name = "GroupBoxTopik"
-        GroupBoxTopik.Size = New Size(864, 491)
+        GroupBoxTopik.Size = New Size(864, 525)
         GroupBoxTopik.TabIndex = 1
         GroupBoxTopik.TabStop = False
         GroupBoxTopik.Text = "Pertanyaan - [Topik]"
@@ -70,14 +70,14 @@ Partial Class FPertanyaan
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 88.01051F))
         TableLayoutPanel1.RowStyles.Add(New RowStyle())
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 11.9894905F))
-        TableLayoutPanel1.Size = New Size(858, 465)
+        TableLayoutPanel1.Size = New Size(858, 499)
         TableLayoutPanel1.TabIndex = 0
         ' 
         ' FlowLayoutPanelNomorSoal
         ' 
         FlowLayoutPanelNomorSoal.Anchor = AnchorStyles.None
         FlowLayoutPanelNomorSoal.AutoSize = True
-        FlowLayoutPanelNomorSoal.Location = New Point(429, 406)
+        FlowLayoutPanelNomorSoal.Location = New Point(429, 436)
         FlowLayoutPanelNomorSoal.Name = "FlowLayoutPanelNomorSoal"
         FlowLayoutPanelNomorSoal.RightToLeft = RightToLeft.No
         FlowLayoutPanelNomorSoal.Size = New Size(0, 0)
@@ -89,7 +89,7 @@ Partial Class FPertanyaan
         PanelWadah.Dock = DockStyle.Fill
         PanelWadah.Location = New Point(3, 3)
         PanelWadah.Name = "PanelWadah"
-        PanelWadah.Size = New Size(852, 397)
+        PanelWadah.Size = New Size(852, 427)
         PanelWadah.TabIndex = 1
         ' 
         ' PanelPertanyaann
@@ -103,7 +103,7 @@ Partial Class FPertanyaan
         PanelPertanyaann.Dock = DockStyle.Fill
         PanelPertanyaann.Location = New Point(0, 0)
         PanelPertanyaann.Name = "PanelPertanyaann"
-        PanelPertanyaann.Size = New Size(852, 397)
+        PanelPertanyaann.Size = New Size(852, 427)
         PanelPertanyaann.TabIndex = 3
         ' 
         ' RadioButton5
@@ -111,7 +111,7 @@ Partial Class FPertanyaan
         RadioButton5.Anchor = AnchorStyles.Bottom
         RadioButton5.AutoSize = True
         RadioButton5.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        RadioButton5.Location = New Point(667, 310)
+        RadioButton5.Location = New Point(667, 340)
         RadioButton5.Name = "RadioButton5"
         RadioButton5.Size = New Size(144, 25)
         RadioButton5.TabIndex = 5
@@ -124,7 +124,7 @@ Partial Class FPertanyaan
         RadioButton4.Anchor = AnchorStyles.Bottom
         RadioButton4.AutoSize = True
         RadioButton4.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        RadioButton4.Location = New Point(559, 310)
+        RadioButton4.Location = New Point(559, 340)
         RadioButton4.Name = "RadioButton4"
         RadioButton4.Size = New Size(87, 25)
         RadioButton4.TabIndex = 4
@@ -137,7 +137,7 @@ Partial Class FPertanyaan
         RadioButton3.Anchor = AnchorStyles.Bottom
         RadioButton3.AutoSize = True
         RadioButton3.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        RadioButton3.Location = New Point(398, 310)
+        RadioButton3.Location = New Point(398, 340)
         RadioButton3.Name = "RadioButton3"
         RadioButton3.Size = New Size(140, 25)
         RadioButton3.TabIndex = 3
@@ -150,7 +150,7 @@ Partial Class FPertanyaan
         RadioButton2.Anchor = AnchorStyles.Bottom
         RadioButton2.AutoSize = True
         RadioButton2.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        RadioButton2.Location = New Point(244, 310)
+        RadioButton2.Location = New Point(244, 340)
         RadioButton2.Name = "RadioButton2"
         RadioButton2.Size = New Size(133, 25)
         RadioButton2.TabIndex = 2
@@ -163,7 +163,7 @@ Partial Class FPertanyaan
         RadioButton1.Anchor = AnchorStyles.Bottom
         RadioButton1.AutoSize = True
         RadioButton1.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        RadioButton1.Location = New Point(33, 310)
+        RadioButton1.Location = New Point(33, 340)
         RadioButton1.Name = "RadioButton1"
         RadioButton1.Size = New Size(190, 25)
         RadioButton1.TabIndex = 1
@@ -176,7 +176,7 @@ Partial Class FPertanyaan
         LabelSoal.Anchor = AnchorStyles.None
         LabelSoal.AutoSize = True
         LabelSoal.Font = New Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        LabelSoal.Location = New Point(352, 165)
+        LabelSoal.Location = New Point(352, 180)
         LabelSoal.Name = "LabelSoal"
         LabelSoal.Size = New Size(148, 25)
         LabelSoal.TabIndex = 0
@@ -188,7 +188,7 @@ Partial Class FPertanyaan
         Panel1.Controls.Add(Button1)
         Panel1.Controls.Add(Button2)
         Panel1.Dock = DockStyle.Top
-        Panel1.Location = New Point(3, 412)
+        Panel1.Location = New Point(3, 442)
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(852, 45)
         Panel1.TabIndex = 2
@@ -227,7 +227,7 @@ Partial Class FPertanyaan
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(864, 491)
+        ClientSize = New Size(864, 525)
         Controls.Add(GroupBoxTopik)
         Font = New Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Icon = CType(resources.GetObject("$this.Icon"), Icon)

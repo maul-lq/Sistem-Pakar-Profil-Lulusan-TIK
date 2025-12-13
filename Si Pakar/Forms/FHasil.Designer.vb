@@ -43,21 +43,22 @@ Partial Class FHasil
         PictureBox5 = New PictureBox()
         PictureBox6 = New PictureBox()
         PictureBox7 = New PictureBox()
-        Panel1 = New Panel()
+        PanelUtama = New Panel()
+        FlowLayoutPanelZona = New FlowLayoutPanel()
+        TableLayoutPanelGoldenMatch = New TableLayoutPanel()
+        Label5 = New Label()
+        TableLayoutPanelHiddenGem = New TableLayoutPanel()
+        TableLayoutPanelExplorer = New TableLayoutPanel()
+        TableLayoutPanel7 = New TableLayoutPanel()
+        TableLayoutPanelRealityCheck = New TableLayoutPanel()
+        TableLayoutPanel3 = New TableLayoutPanel()
+        TableLayoutPanel1 = New TableLayoutPanel()
         ButtonGantiDataUser = New Button()
         LabelEmail = New Label()
         LabelUsername = New Label()
         CheckBoxDonSev = New CheckBox()
         PrintPreviewDialogTesDoc = New PrintPreviewDialog()
         DokumenHasilTes = New Printing.PrintDocument()
-        TableLayoutPanel1 = New TableLayoutPanel()
-        TableLayoutPanel2 = New TableLayoutPanel()
-        TableLayoutPanel3 = New TableLayoutPanel()
-        Label5 = New Label()
-        TableLayoutPanel4 = New TableLayoutPanel()
-        TableLayoutPanel5 = New TableLayoutPanel()
-        TableLayoutPanel6 = New TableLayoutPanel()
-        TableLayoutPanel7 = New TableLayoutPanel()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
@@ -65,14 +66,15 @@ Partial Class FHasil
         CType(PictureBox5, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox6, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox7, ComponentModel.ISupportInitialize).BeginInit()
-        Panel1.SuspendLayout()
-        TableLayoutPanel1.SuspendLayout()
-        TableLayoutPanel2.SuspendLayout()
-        TableLayoutPanel3.SuspendLayout()
-        TableLayoutPanel4.SuspendLayout()
-        TableLayoutPanel5.SuspendLayout()
-        TableLayoutPanel6.SuspendLayout()
+        PanelUtama.SuspendLayout()
+        FlowLayoutPanelZona.SuspendLayout()
+        TableLayoutPanelGoldenMatch.SuspendLayout()
+        TableLayoutPanelHiddenGem.SuspendLayout()
+        TableLayoutPanelExplorer.SuspendLayout()
         TableLayoutPanel7.SuspendLayout()
+        TableLayoutPanelRealityCheck.SuspendLayout()
+        TableLayoutPanel3.SuspendLayout()
+        TableLayoutPanel1.SuspendLayout()
         SuspendLayout()
         ' 
         ' LabelKarir1st
@@ -289,26 +291,180 @@ Partial Class FHasil
         PictureBox7.TabIndex = 20
         PictureBox7.TabStop = False
         ' 
-        ' Panel1
+        ' PanelUtama
         ' 
-        Panel1.Controls.Add(TableLayoutPanel7)
-        Panel1.Controls.Add(TableLayoutPanel6)
-        Panel1.Controls.Add(TableLayoutPanel5)
-        Panel1.Controls.Add(TableLayoutPanel4)
-        Panel1.Controls.Add(TableLayoutPanel3)
-        Panel1.Controls.Add(TableLayoutPanel2)
-        Panel1.Controls.Add(TableLayoutPanel1)
-        Panel1.Controls.Add(ButtonGantiDataUser)
-        Panel1.Controls.Add(LabelEmail)
-        Panel1.Controls.Add(LabelUsername)
-        Panel1.Controls.Add(CheckBoxDonSev)
-        Panel1.Controls.Add(ButtonPrint)
-        Panel1.Controls.Add(ButtonKembaliKeAwal)
-        Panel1.Dock = DockStyle.Fill
-        Panel1.Location = New Point(0, 0)
-        Panel1.Name = "Panel1"
-        Panel1.Size = New Size(804, 451)
-        Panel1.TabIndex = 21
+        PanelUtama.Controls.Add(FlowLayoutPanelZona)
+        PanelUtama.Controls.Add(TableLayoutPanel7)
+        PanelUtama.Controls.Add(TableLayoutPanel3)
+        PanelUtama.Controls.Add(TableLayoutPanel1)
+        PanelUtama.Controls.Add(ButtonGantiDataUser)
+        PanelUtama.Controls.Add(LabelEmail)
+        PanelUtama.Controls.Add(LabelUsername)
+        PanelUtama.Controls.Add(CheckBoxDonSev)
+        PanelUtama.Controls.Add(ButtonPrint)
+        PanelUtama.Controls.Add(ButtonKembaliKeAwal)
+        PanelUtama.Dock = DockStyle.Fill
+        PanelUtama.Location = New Point(0, 0)
+        PanelUtama.Name = "PanelUtama"
+        PanelUtama.Size = New Size(804, 451)
+        PanelUtama.TabIndex = 21
+        ' 
+        ' FlowLayoutPanelZona
+        ' 
+        FlowLayoutPanelZona.Anchor = AnchorStyles.None
+        FlowLayoutPanelZona.AutoSize = True
+        FlowLayoutPanelZona.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        FlowLayoutPanelZona.Controls.Add(TableLayoutPanelGoldenMatch)
+        FlowLayoutPanelZona.Controls.Add(TableLayoutPanelHiddenGem)
+        FlowLayoutPanelZona.Controls.Add(TableLayoutPanelRealityCheck)
+        FlowLayoutPanelZona.Controls.Add(TableLayoutPanelExplorer)
+        FlowLayoutPanelZona.Location = New Point(97, 222)
+        FlowLayoutPanelZona.Name = "FlowLayoutPanelZona"
+        FlowLayoutPanelZona.Padding = New Padding(5)
+        FlowLayoutPanelZona.Size = New Size(611, 144)
+        FlowLayoutPanelZona.TabIndex = 33
+        ' 
+        ' TableLayoutPanelGoldenMatch
+        ' 
+        TableLayoutPanelGoldenMatch.Anchor = AnchorStyles.None
+        TableLayoutPanelGoldenMatch.AutoSize = True
+        TableLayoutPanelGoldenMatch.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanelGoldenMatch.ColumnCount = 1
+        TableLayoutPanelGoldenMatch.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanelGoldenMatch.Controls.Add(LabelGoldeMatch, 0, 2)
+        TableLayoutPanelGoldenMatch.Controls.Add(Label5, 0, 1)
+        TableLayoutPanelGoldenMatch.Controls.Add(PictureBox4, 0, 0)
+        TableLayoutPanelGoldenMatch.Location = New Point(8, 8)
+        TableLayoutPanelGoldenMatch.Margin = New Padding(3, 3, 80, 3)
+        TableLayoutPanelGoldenMatch.Name = "TableLayoutPanelGoldenMatch"
+        TableLayoutPanelGoldenMatch.RowCount = 3
+        TableLayoutPanelGoldenMatch.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanelGoldenMatch.RowStyles.Add(New RowStyle())
+        TableLayoutPanelGoldenMatch.RowStyles.Add(New RowStyle())
+        TableLayoutPanelGoldenMatch.Size = New Size(88, 128)
+        TableLayoutPanelGoldenMatch.TabIndex = 31
+        ' 
+        ' Label5
+        ' 
+        Label5.Anchor = AnchorStyles.None
+        Label5.AutoSize = True
+        Label5.Location = New Point(3, 93)
+        Label5.Margin = New Padding(3, 7, 3, 0)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(82, 15)
+        Label5.TabIndex = 4
+        Label5.Text = "Golden Match"
+        ' 
+        ' TableLayoutPanelHiddenGem
+        ' 
+        TableLayoutPanelHiddenGem.Anchor = AnchorStyles.None
+        TableLayoutPanelHiddenGem.AutoSize = True
+        TableLayoutPanelHiddenGem.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanelHiddenGem.ColumnCount = 1
+        TableLayoutPanelHiddenGem.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanelHiddenGem.Controls.Add(PictureBox1, 0, 0)
+        TableLayoutPanelHiddenGem.Controls.Add(LabelHiddenGem, 0, 2)
+        TableLayoutPanelHiddenGem.Controls.Add(Label6, 0, 1)
+        TableLayoutPanelHiddenGem.Location = New Point(179, 8)
+        TableLayoutPanelHiddenGem.Margin = New Padding(3, 3, 80, 3)
+        TableLayoutPanelHiddenGem.Name = "TableLayoutPanelHiddenGem"
+        TableLayoutPanelHiddenGem.RowCount = 3
+        TableLayoutPanelHiddenGem.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanelHiddenGem.RowStyles.Add(New RowStyle())
+        TableLayoutPanelHiddenGem.RowStyles.Add(New RowStyle())
+        TableLayoutPanelHiddenGem.Size = New Size(86, 128)
+        TableLayoutPanelHiddenGem.TabIndex = 32
+        ' 
+        ' TableLayoutPanelExplorer
+        ' 
+        TableLayoutPanelExplorer.Anchor = AnchorStyles.None
+        TableLayoutPanelExplorer.AutoSize = True
+        TableLayoutPanelExplorer.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanelExplorer.ColumnCount = 1
+        TableLayoutPanelExplorer.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanelExplorer.Controls.Add(LabelExplorer, 0, 2)
+        TableLayoutPanelExplorer.Controls.Add(Label8, 0, 1)
+        TableLayoutPanelExplorer.Controls.Add(PictureBox5, 0, 0)
+        TableLayoutPanelExplorer.Location = New Point(517, 8)
+        TableLayoutPanelExplorer.Name = "TableLayoutPanelExplorer"
+        TableLayoutPanelExplorer.RowCount = 3
+        TableLayoutPanelExplorer.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanelExplorer.RowStyles.Add(New RowStyle())
+        TableLayoutPanelExplorer.RowStyles.Add(New RowStyle())
+        TableLayoutPanelExplorer.Size = New Size(86, 128)
+        TableLayoutPanelExplorer.TabIndex = 28
+        ' 
+        ' TableLayoutPanel7
+        ' 
+        TableLayoutPanel7.Anchor = AnchorStyles.None
+        TableLayoutPanel7.AutoSize = True
+        TableLayoutPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanel7.ColumnCount = 1
+        TableLayoutPanel7.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanel7.Controls.Add(PictureBox6, 0, 0)
+        TableLayoutPanel7.Controls.Add(LabelKarir3Rd, 0, 1)
+        TableLayoutPanel7.Location = New Point(582, 102)
+        TableLayoutPanel7.Name = "TableLayoutPanel7"
+        TableLayoutPanel7.RowCount = 2
+        TableLayoutPanel7.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanel7.RowStyles.Add(New RowStyle())
+        TableLayoutPanel7.Size = New Size(89, 101)
+        TableLayoutPanel7.TabIndex = 30
+        ' 
+        ' TableLayoutPanelRealityCheck
+        ' 
+        TableLayoutPanelRealityCheck.Anchor = AnchorStyles.None
+        TableLayoutPanelRealityCheck.AutoSize = True
+        TableLayoutPanelRealityCheck.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanelRealityCheck.ColumnCount = 1
+        TableLayoutPanelRealityCheck.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanelRealityCheck.Controls.Add(Label7, 0, 1)
+        TableLayoutPanelRealityCheck.Controls.Add(PictureBox2, 0, 0)
+        TableLayoutPanelRealityCheck.Controls.Add(LabelRealityCheck, 0, 2)
+        TableLayoutPanelRealityCheck.Location = New Point(348, 8)
+        TableLayoutPanelRealityCheck.Margin = New Padding(3, 3, 80, 3)
+        TableLayoutPanelRealityCheck.Name = "TableLayoutPanelRealityCheck"
+        TableLayoutPanelRealityCheck.RowCount = 3
+        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle())
+        TableLayoutPanelRealityCheck.RowStyles.Add(New RowStyle())
+        TableLayoutPanelRealityCheck.Size = New Size(86, 128)
+        TableLayoutPanelRealityCheck.TabIndex = 30
+        ' 
+        ' TableLayoutPanel3
+        ' 
+        TableLayoutPanel3.Anchor = AnchorStyles.None
+        TableLayoutPanel3.AutoSize = True
+        TableLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanel3.ColumnCount = 1
+        TableLayoutPanel3.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanel3.Controls.Add(LabelKarir2nd, 0, 1)
+        TableLayoutPanel3.Controls.Add(PictureBox3, 0, 0)
+        TableLayoutPanel3.Location = New Point(129, 102)
+        TableLayoutPanel3.Name = "TableLayoutPanel3"
+        TableLayoutPanel3.RowCount = 2
+        TableLayoutPanel3.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanel3.RowStyles.Add(New RowStyle())
+        TableLayoutPanel3.Size = New Size(89, 101)
+        TableLayoutPanel3.TabIndex = 29
+        ' 
+        ' TableLayoutPanel1
+        ' 
+        TableLayoutPanel1.Anchor = AnchorStyles.None
+        TableLayoutPanel1.AutoSize = True
+        TableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        TableLayoutPanel1.ColumnCount = 1
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanel1.Controls.Add(LabelKarir1st, 0, 1)
+        TableLayoutPanel1.Controls.Add(PictureBox7, 0, 0)
+        TableLayoutPanel1.Location = New Point(350, 57)
+        TableLayoutPanel1.Name = "TableLayoutPanel1"
+        TableLayoutPanel1.RowCount = 2
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle())
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        TableLayoutPanel1.Size = New Size(100, 103)
+        TableLayoutPanel1.TabIndex = 27
         ' 
         ' ButtonGantiDataUser
         ' 
@@ -365,152 +521,13 @@ Partial Class FHasil
         ' DokumenHasilTes
         ' 
         ' 
-        ' TableLayoutPanel1
-        ' 
-        TableLayoutPanel1.Anchor = AnchorStyles.None
-        TableLayoutPanel1.AutoSize = True
-        TableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel1.ColumnCount = 1
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel1.Controls.Add(LabelKarir1st, 0, 1)
-        TableLayoutPanel1.Controls.Add(PictureBox7, 0, 0)
-        TableLayoutPanel1.Location = New Point(350, 57)
-        TableLayoutPanel1.Name = "TableLayoutPanel1"
-        TableLayoutPanel1.RowCount = 2
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle())
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
-        TableLayoutPanel1.Size = New Size(100, 103)
-        TableLayoutPanel1.TabIndex = 27
-        ' 
-        ' TableLayoutPanel2
-        ' 
-        TableLayoutPanel2.Anchor = AnchorStyles.None
-        TableLayoutPanel2.AutoSize = True
-        TableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel2.ColumnCount = 1
-        TableLayoutPanel2.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel2.Controls.Add(LabelExplorer, 0, 2)
-        TableLayoutPanel2.Controls.Add(Label8, 0, 1)
-        TableLayoutPanel2.Controls.Add(PictureBox5, 0, 0)
-        TableLayoutPanel2.Location = New Point(676, 226)
-        TableLayoutPanel2.Name = "TableLayoutPanel2"
-        TableLayoutPanel2.RowCount = 3
-        TableLayoutPanel2.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel2.RowStyles.Add(New RowStyle())
-        TableLayoutPanel2.RowStyles.Add(New RowStyle())
-        TableLayoutPanel2.Size = New Size(86, 128)
-        TableLayoutPanel2.TabIndex = 28
-        ' 
-        ' TableLayoutPanel3
-        ' 
-        TableLayoutPanel3.Anchor = AnchorStyles.None
-        TableLayoutPanel3.AutoSize = True
-        TableLayoutPanel3.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel3.ColumnCount = 1
-        TableLayoutPanel3.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel3.Controls.Add(LabelKarir2nd, 0, 1)
-        TableLayoutPanel3.Controls.Add(PictureBox3, 0, 0)
-        TableLayoutPanel3.Location = New Point(129, 102)
-        TableLayoutPanel3.Name = "TableLayoutPanel3"
-        TableLayoutPanel3.RowCount = 2
-        TableLayoutPanel3.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel3.RowStyles.Add(New RowStyle())
-        TableLayoutPanel3.Size = New Size(89, 101)
-        TableLayoutPanel3.TabIndex = 29
-        ' 
-        ' Label5
-        ' 
-        Label5.Anchor = AnchorStyles.None
-        Label5.AutoSize = True
-        Label5.Location = New Point(3, 93)
-        Label5.Margin = New Padding(3, 7, 3, 0)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(82, 15)
-        Label5.TabIndex = 4
-        Label5.Text = "Golden Match"
-        ' 
-        ' TableLayoutPanel4
-        ' 
-        TableLayoutPanel4.Anchor = AnchorStyles.None
-        TableLayoutPanel4.AutoSize = True
-        TableLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel4.ColumnCount = 1
-        TableLayoutPanel4.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel4.Controls.Add(Label7, 0, 1)
-        TableLayoutPanel4.Controls.Add(PictureBox2, 0, 0)
-        TableLayoutPanel4.Controls.Add(LabelRealityCheck, 0, 2)
-        TableLayoutPanel4.Location = New Point(467, 226)
-        TableLayoutPanel4.Name = "TableLayoutPanel4"
-        TableLayoutPanel4.RowCount = 3
-        TableLayoutPanel4.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel4.RowStyles.Add(New RowStyle())
-        TableLayoutPanel4.RowStyles.Add(New RowStyle())
-        TableLayoutPanel4.Size = New Size(86, 128)
-        TableLayoutPanel4.TabIndex = 30
-        ' 
-        ' TableLayoutPanel5
-        ' 
-        TableLayoutPanel5.Anchor = AnchorStyles.None
-        TableLayoutPanel5.AutoSize = True
-        TableLayoutPanel5.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel5.ColumnCount = 1
-        TableLayoutPanel5.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel5.Controls.Add(LabelGoldeMatch, 0, 2)
-        TableLayoutPanel5.Controls.Add(Label5, 0, 1)
-        TableLayoutPanel5.Controls.Add(PictureBox4, 0, 0)
-        TableLayoutPanel5.Location = New Point(47, 226)
-        TableLayoutPanel5.Name = "TableLayoutPanel5"
-        TableLayoutPanel5.RowCount = 3
-        TableLayoutPanel5.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel5.RowStyles.Add(New RowStyle())
-        TableLayoutPanel5.RowStyles.Add(New RowStyle())
-        TableLayoutPanel5.Size = New Size(88, 128)
-        TableLayoutPanel5.TabIndex = 31
-        ' 
-        ' TableLayoutPanel6
-        ' 
-        TableLayoutPanel6.Anchor = AnchorStyles.None
-        TableLayoutPanel6.AutoSize = True
-        TableLayoutPanel6.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel6.ColumnCount = 1
-        TableLayoutPanel6.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel6.Controls.Add(PictureBox1, 0, 0)
-        TableLayoutPanel6.Controls.Add(LabelHiddenGem, 0, 2)
-        TableLayoutPanel6.Controls.Add(Label6, 0, 1)
-        TableLayoutPanel6.Location = New Point(258, 226)
-        TableLayoutPanel6.Name = "TableLayoutPanel6"
-        TableLayoutPanel6.RowCount = 3
-        TableLayoutPanel6.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel6.RowStyles.Add(New RowStyle())
-        TableLayoutPanel6.RowStyles.Add(New RowStyle())
-        TableLayoutPanel6.Size = New Size(86, 128)
-        TableLayoutPanel6.TabIndex = 32
-        ' 
-        ' TableLayoutPanel7
-        ' 
-        TableLayoutPanel7.Anchor = AnchorStyles.None
-        TableLayoutPanel7.AutoSize = True
-        TableLayoutPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel7.ColumnCount = 1
-        TableLayoutPanel7.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel7.Controls.Add(PictureBox6, 0, 0)
-        TableLayoutPanel7.Controls.Add(LabelKarir3Rd, 0, 1)
-        TableLayoutPanel7.Location = New Point(582, 102)
-        TableLayoutPanel7.Name = "TableLayoutPanel7"
-        TableLayoutPanel7.RowCount = 2
-        TableLayoutPanel7.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel7.RowStyles.Add(New RowStyle())
-        TableLayoutPanel7.Size = New Size(89, 101)
-        TableLayoutPanel7.TabIndex = 30
-        ' 
         ' FHasil
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(804, 451)
         Controls.Add(Label4)
-        Controls.Add(Panel1)
+        Controls.Add(PanelUtama)
         Icon = CType(resources.GetObject("$this.Icon"), Icon)
         Name = "FHasil"
         StartPosition = FormStartPosition.CenterScreen
@@ -522,22 +539,24 @@ Partial Class FHasil
         CType(PictureBox5, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox6, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox7, ComponentModel.ISupportInitialize).EndInit()
-        Panel1.ResumeLayout(False)
-        Panel1.PerformLayout()
-        TableLayoutPanel1.ResumeLayout(False)
-        TableLayoutPanel1.PerformLayout()
-        TableLayoutPanel2.ResumeLayout(False)
-        TableLayoutPanel2.PerformLayout()
-        TableLayoutPanel3.ResumeLayout(False)
-        TableLayoutPanel3.PerformLayout()
-        TableLayoutPanel4.ResumeLayout(False)
-        TableLayoutPanel4.PerformLayout()
-        TableLayoutPanel5.ResumeLayout(False)
-        TableLayoutPanel5.PerformLayout()
-        TableLayoutPanel6.ResumeLayout(False)
-        TableLayoutPanel6.PerformLayout()
+        PanelUtama.ResumeLayout(False)
+        PanelUtama.PerformLayout()
+        FlowLayoutPanelZona.ResumeLayout(False)
+        FlowLayoutPanelZona.PerformLayout()
+        TableLayoutPanelGoldenMatch.ResumeLayout(False)
+        TableLayoutPanelGoldenMatch.PerformLayout()
+        TableLayoutPanelHiddenGem.ResumeLayout(False)
+        TableLayoutPanelHiddenGem.PerformLayout()
+        TableLayoutPanelExplorer.ResumeLayout(False)
+        TableLayoutPanelExplorer.PerformLayout()
         TableLayoutPanel7.ResumeLayout(False)
         TableLayoutPanel7.PerformLayout()
+        TableLayoutPanelRealityCheck.ResumeLayout(False)
+        TableLayoutPanelRealityCheck.PerformLayout()
+        TableLayoutPanel3.ResumeLayout(False)
+        TableLayoutPanel3.PerformLayout()
+        TableLayoutPanel1.ResumeLayout(False)
+        TableLayoutPanel1.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -562,7 +581,7 @@ Partial Class FHasil
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
-    Friend WithEvents Panel1 As Panel
+    Friend WithEvents PanelUtama As Panel
     Friend WithEvents CheckBoxDonSev As CheckBox
     Friend WithEvents LabelEmail As Label
     Friend WithEvents LabelUsername As Label
@@ -570,11 +589,12 @@ Partial Class FHasil
     Friend WithEvents PrintPreviewDialogTesDoc As PrintPreviewDialog
     Friend WithEvents DokumenHasilTes As Printing.PrintDocument
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
-    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
+    Friend WithEvents TableLayoutPanelExplorer As TableLayoutPanel
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel7 As TableLayoutPanel
-    Friend WithEvents TableLayoutPanel6 As TableLayoutPanel
-    Friend WithEvents TableLayoutPanel5 As TableLayoutPanel
+    Friend WithEvents TableLayoutPanelHiddenGem As TableLayoutPanel
+    Friend WithEvents TableLayoutPanelGoldenMatch As TableLayoutPanel
     Friend WithEvents Label5 As Label
-    Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
+    Friend WithEvents TableLayoutPanelRealityCheck As TableLayoutPanel
+    Friend WithEvents FlowLayoutPanelZona As FlowLayoutPanel
 End Class

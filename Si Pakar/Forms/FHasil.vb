@@ -38,6 +38,12 @@ Public Class FHasil
     Private Sub FHasil_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 #If DEBUG Then
         Me.Text &= " (DEBUG)"
+
+#Const hideBadge = False
+#If hideBadge Then
+        TableLayoutPanelRealityCheck.Hide()
+        FlowLayoutPanelBadge.Location = New Point((PanelUtama.Size.Width - FlowLayoutPanelBadge.Size.Width) / 2, FlowLayoutPanelBadge.Location.Y)
+#End If
 #End If
         Try
             ' 1. Hitung hasil akhir
@@ -106,10 +112,34 @@ Public Class FHasil
         Dim explorer = top3.FirstOrDefault(Function(x) x.Zona = "Explorer")
         If explorer Is Nothing Then explorer = sortedList.Where(Function(x) x.Zona = "Explorer").FirstOrDefault()
 
-        LabelGoldeMatch.Text = If(goldenMatch IsNot Nothing, goldenMatch.NamaProfesi, "Tidak Ada")
-        LabelHiddenGem.Text = If(hiddenGem IsNot Nothing, hiddenGem.NamaProfesi, "Tidak Ada")
-        LabelRealityCheck.Text = If(realityCheck IsNot Nothing, realityCheck.NamaProfesi, "Tidak Ada")
-        LabelExplorer.Text = If(explorer IsNot Nothing, explorer.NamaProfesi, "Tidak Ada")
+        ' Cek karir ada masuk dalam zona apa tidak
+        If goldenMatch IsNot Nothing Then
+            LabelGoldeMatch.Text = goldenMatch.NamaProfesi
+        Else
+            TableLayoutPanelGoldenMatch.Hide()
+        End If
+
+        If hiddenGem IsNot Nothing Then
+            LabelHiddenGem.Text = hiddenGem.NamaProfesi
+        Else
+            TableLayoutPanelHiddenGem.Hide()
+        End If
+
+        If realityCheck IsNot Nothing Then
+            LabelRealityCheck.Text = realityCheck.NamaProfesi
+        Else
+            TableLayoutPanelRealityCheck.Hide()
+        End If
+
+        If explorer IsNot Nothing Then
+            LabelExplorer.Text = explorer.NamaProfesi
+        Else
+            TableLayoutPanelExplorer.Hide()
+        End If
+
+        'Atur Posisi Layout Zona zona di tengah
+        FlowLayoutPanelZona.Location = New Point((PanelUtama.Size.Width - FlowLayoutPanelZona.Size.Width) / 2, FlowLayoutPanelZona.Location.Y)
+
 
         ' Tampilkan info linearitas in MessageBox
         Dim pesanLinear As New System.Text.StringBuilder()
@@ -997,9 +1027,5 @@ Public Class FHasil
 
     Private Sub DokumenHasilTes_BeginPrint(sender As Object, e As PrintEventArgs) Handles DokumenHasilTes.BeginPrint
         currentPage = 0
-    End Sub
-
-    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
-
     End Sub
 End Class
